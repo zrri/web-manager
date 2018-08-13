@@ -1,0 +1,34 @@
+<package name="auth" namespace="user" extends="filter-base.xml,filter-verify.xml,filter-retcode.xml">
+	<service name="queryModuleInfoList" class="service.auth.services.f07.f0705.F0705"
+			method="queryModuleInfoList">
+	</service>
+	<service name="deleteModuleInfoList" class="service.auth.services.f07.f0705.F0705"
+			method="deleteModuleInfoList">
+	</service>
+	
+	<service name="addModuleInfo" class="service.auth.services.f07.f0705.F0705"
+			method="addModuleInfo">
+	</service>
+	<service name="updateModuleInfo" class="service.auth.services.f07.f0705.F0705"
+			method="updateModuleInfo">
+	</service>
+	
+	<service name="queryOperatorList" class="service.auth.services.f07.f0705.F0705"
+			method="queryOperatorList">
+	</service>
+	<service name="queryFuncGroupList" class="service.auth.services.f07.f0705.F0705"
+			method="queryFuncGroupList">
+	</service>
+	<service name="isExistFuncID" class="service.auth.services.f07.f0705.F0705"
+			method="isExistFuncID">
+	</service>
+	<service name="queryAllFuncFromGroup" class="service.auth.services.f07.f0705.F0705"
+			method="queryAllFuncFromGroup">
+	</service>
+	
+	<!--
+	<service name="editModuleInfo" class="service.auth.services.f07.f0705.F0705"
+			method="editModuleInfo">
+	</service>
+	-->
+</package>

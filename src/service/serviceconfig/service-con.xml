@@ -1,0 +1,7 @@
+<package name="file" namespace="xml">
+	<!-- 
+		<service name="DemoService" class="service.xml.XmlService"
+			method="execute" in="xx.InBean" out="xx.OutBean">
+		</service>
+	 -->
+</package>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<YUML>
+  <Head/>
+  <Body>
+    <Composite size="800,600">
+      <GridLayout columnsEqualWidth="false" horizontalSpacing="0" numColumns="1" verticalSpacing="0">
+        <Panel name="panel1" size="800,600" layoutData="GridLayout,grabExcessHorizontalSpace=true,grabExcessVerticalSpace=false,horizontalAlignment=CENTER,verticalAlignment=TOP,verticalSpan=1,horizontalSpan=1">
+          <XYLayout/>
+        </Panel>
+      </GridLayout>
+    </Composite>
+  </Body>
+</YUML>

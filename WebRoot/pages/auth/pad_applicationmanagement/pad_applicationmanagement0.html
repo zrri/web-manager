@@ -1,0 +1,95 @@
+<div id="pad_applicationmanagement">
+  <el-row :gutter="5">
+    <el-col :span="10">
+      <el-card class="box-card" style="height:500px;overflow:auto">
+        <div slot="header" class="clearfix">
+          <span>已分组功能</span>
+        </div>
+        <el-row :gutter="0" style="padding-top:10px">
+          <el-col :span="5">
+            <el-button type="primary" @click="addNewApplication">添加</el-button>
+          </el-col>
+          <el-col :span="5">
+            <el-button type="primary" @click="multApplicationsDelete">删除</el-button>
+          </el-col>
+          <el-col :span="5">
+            <el-button type="primary" @click="updateApplication">编辑</el-button>
+          </el-col>
+        </el-row>
+        <el-tree
+          class="filter-tree"
+          style="border:none"
+        >
+        </el-tree>
+      </el-card>
+
+    </el-col>
+
+
+
+    <el-col :span="4">
+      <div style="height:500px;display:table;width:100%">
+        <div style="text-align:center; vertical-align:middle;display:table-cell">
+          <el-row>
+            <el-button type="primary" style="margin-bottom:50px">从分组加入</el-button>
+          </el-row>
+          <el-row>
+            <el-button type="primary">从分组移除</el-button>
+          </el-row>
+        </div>
+      </div>
+    </el-col>
+
+    <el-col :span="10">
+      <el-card class="box-card" style="height:500px;overflow:auto">
+          <div class="clearfix" slot="header">
+            <span>未分组功能</span>
+          </div>
+          <el-tree
+            style="border:none"
+          >
+          </el-tree>
+      </el-card>
+    </el-col>
+  </el-row>
+
+</div>
+
+
+
+
+<!-- 添加,修改功能组的Dialog -->
+<div id="pad_applicationDialog">
+  <el-dialog :title="titleName" :visible.sync="isShowDialog">
+    <el-card class="box-card" style="padding-top:20px">
+      <el-form :inline="true" class="demo-form-inline">
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="功能组编号">
+              <el-input v-model="formData.applicationId"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="功能组名称">
+              <el-input v-model="formData.applicationName"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="功能组排序">
+              <el-input v-model="formData.array"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </el-card>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="cancelDialog">取消</el-button>
+      <el-button>{{buttonName}}</el-button>
+    </div>
+  </el-dialog>
+
+
+
+
+
+</div>

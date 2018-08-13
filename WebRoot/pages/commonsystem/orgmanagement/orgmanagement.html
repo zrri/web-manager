@@ -1,0 +1,94 @@
+<!-- 必须全局拥有唯一的id -->
+<div id="el_orgmanagement">
+    <el-row :gutter="20">
+
+        <el-col :span="10">
+
+            <el-card class="box-card" style="height:700px;overflow:auto;">
+                <div slot="header" class="clearfix">
+                    <span>菜单</span>
+                </div>
+        <el-row :gutter="20">
+            <el-col :span="13">
+        <!-- 此部分树如何使用 -->
+        <el-input
+                placeholder="输入关键字进行过滤"
+                v-model="filterText">
+        </el-input>
+            </el-col>
+            <el-col :span="3">
+        <el-button type="primary" @click="add()" >添加</el-button>
+            </el-col>
+            <el-col :span="3">
+        <el-button type="primary" @click="remove()">删除</el-button>
+            </el-col>
+            <el-col :span="3">
+        <el-button type="primary" @click="addRootOrg">添加跟机构</el-button>
+            </el-col>
+        </el-row>
+
+
+        <el-tree
+                id="org-tree"
+                class="filter-tree"
+                :data="data2"
+                :props="defaultProps"
+                :filter-node-method="filterNode"
+                ref="orgTree"
+
+                node-key="id"
+                @node-click="nodeClick"	style="border:none">
+        </el-tree>
+            </el-card>
+
+
+        </el-col>
+
+        <el-col :span="13">
+            <el-card class="box-card" style="height:700px;overflow:auto;">
+                <div slot="header" class="clearfix">
+                    <span>详情</span>
+                </div>
+            <el-form :model="orginfoForm" :rules="rules" ref="orginfoForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="父机构" prop="parentNode">
+                    <el-input v-model="orginfoForm.parentnode"></el-input>
+                </el-form-item>
+                <el-form-item label="机构编码" prop="parentNodeName">
+                    <el-input v-model="orginfoForm.orgid"></el-input>
+                </el-form-item>
+                <el-form-item label="简称" prop="orgShortName">
+                    <el-input v-model="orginfoForm.orgshortname"></el-input>
+                </el-form-item>
+                <el-form-item label="机构全称" prop="orgName">
+                    <el-input v-model="orginfoForm.orgname"></el-input>
+                </el-form-item>
+                <el-form-item label="是否允许子机构" >
+                    <el-radio-group v-model="orginfoForm.admit">
+                        <el-radio label="允许"></el-radio>
+                        <el-radio label="不允许"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="排序" >
+                    <el-input v-model="orginfoForm.order"></el-input>
+                </el-form-item>
+                <el-form-item label="创建人" >
+                    <el-input v-model="orginfoForm.createby"></el-input>
+                </el-form-item>
+                <el-form-item label="备注" >
+                    <el-input type="textarea" v-model="orginfoForm.desc"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm('update')"  ref="updateBtn">更新</el-button>
+
+                    <el-button type="primary" @click="submitForm('add')"  ref="addBtn">添加</el-button>
+
+                    <el-button @click="resetForm()">重置</el-button>
+                </el-form-item>
+            </el-form>
+            </el-card>
+
+        </el-col>
+
+
+    </el-row>
+</div>

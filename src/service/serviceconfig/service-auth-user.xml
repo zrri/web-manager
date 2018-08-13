@@ -1,0 +1,14 @@
+<package name="auth" namespace="user" extends="filter-base.xml,filter-verify.xml,filter-retcode.xml">
+	<service name="queryUserInfoList" class="service.auth.services.f02.f0205.F0205"
+			method="queryUserInfoList">
+	</service>
+	<service name="deleteUserInfoList" class="service.auth.services.f02.f0205.F0205"
+			method="deleteUserInfoList">
+	</service>
+	<service name="addUserInfo" class="service.auth.services.f02.f0205.F0205"
+			method="addUserInfo">
+	</service>
+		<service name="updateUserInfo" class="service.auth.services.f02.f0205.F0205"
+			method="updateUserInfo">
+	</service>
+</package>

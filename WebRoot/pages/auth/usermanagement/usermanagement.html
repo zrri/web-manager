@@ -1,0 +1,261 @@
+<!-- 必须全局拥有唯一的id -->
+<div id="el_usermanagement">
+    <el-card class="box-card" style="padding-top:20px">
+        <el-form :inline="true" :model="userInfoSearch" ref="userInfoForm" class="demo-form-inline">
+            <el-row>
+                <el-col :span="6">
+                    <el-form-item label="员工编号">
+                        <el-input v-model="userInfoSearch.userId" placeholder="员工编号"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="员工姓名">
+                        <el-input v-model="userInfoSearch.username" placeholder="员工姓名"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="所属机构">
+                        <el-input v-model="userInfoSearch.orgChiName" placeholder="所属机构"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="识别号">
+                        <el-input v-model="userInfoSearch.identifyNO" placeholder="识别号"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="6">
+                    <el-form-item label="性别">
+                        <el-select v-model="userInfoSearch.sex" placeholder="性别">
+                            <el-option label="所有" value=""></el-option>
+                            <el-option label="男" value="1"></el-option>
+                            <el-option label="女" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="用户状态">
+                        <el-select v-model="userInfoSearch.status" placeholder="用户状态">
+                            <el-option v-for="item in statusOptions" :key="item.id" :label="item.label" :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row type="flex" justify="center">
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">查询</el-button>
+                    <el-button type="primary" @click="onClear">清空</el-button>
+                </el-form-item>
+            </el-row>
+        </el-form>
+    </el-card>
+    <el-card class="box-card" style="padding-top:10px">
+
+        <div class="yu-toolBar">
+            <el-button-group>
+                <el-button icon="plus" @click="createFn">新增</el-button>
+                <el-button icon="yx-bin" @click="deleteFn">删除</el-button>
+                <el-button icon="yx-bin" @click="changeFn">修改</el-button>
+                <!--<el-button icon="yx-bin" @click="changeStatusFn(1)">停用用户</el-button>
+                <el-button icon="yx-bin" @click="changeStatusFn(0)">启用用户</el-button>-->
+            </el-button-group>
+        </div>
+    </el-card>
+    <template>
+        <el-table id="userTable" :data="getUserData" border style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="72"></el-table-column>
+            <el-table-column prop="userOptions" label="操作" width="120">
+                <template scope="scope">
+                    <el-button size="mini" type="info" icon="search" @click="handleShow(scope.$index, scope.row)">
+                    </el-button>
+                    <el-button size="mini" type="primary" icon="edit" @click="handleEdit(scope.$index, scope.row)">
+                    </el-button>
+                    <el-button size="mini" type="danger" icon="delete" @click="handleDelete(scope.$index, scope.row)">
+                    </el-button>
+                </template>
+            </el-table-column>
+            <el-table-column prop="userNo" label="序号" width="72">
+                <template scope="scope">
+                    {{scope.row.userNo=scope.$index+1}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="userId" label="员工编号" width="100"></el-table-column>
+            <el-table-column prop="username" label="姓名" width="100"></el-table-column>
+            <el-table-column prop="sex" label="性别" width="60">
+                <template scope="scope">
+                    {{ scope.row.sex == 1? '男' : '女' }}
+                </template>
+            </el-table-column>
+            <el-table-column prop="orgChiName" label="所属机构" width="180"></el-table-column>
+            <el-table-column prop="identifyNO" label="识别号" width="180"></el-table-column>
+            <el-table-column prop="roleId" label="关联角色编号" width="180"  v-if="false"></el-table-column>
+            <el-table-column prop="roleName" label="关联角色" width="180"></el-table-column>
+            <el-table-column prop="status" label="用户状态" width="90" :formatter="showStatus">
+            </el-table-column>
+            <el-table-column prop="englishName" label="英文名" width="120"></el-table-column>
+            <el-table-column prop="cellphone" label="手机号" width="180"></el-table-column>
+            <el-table-column prop="phone" label="固定电话" width="140"></el-table-column>
+            <el-table-column prop="email" label="电子邮箱" width="180"></el-table-column>
+        </el-table>
+    </template>
+    <el-pagination background layout="prev, pager, next" :total="userManagementData.length" :page-size="pageSize" @size-change="sizeChange"
+        @current-change="currentChange" @prev-click="prevClick" @next-click="nextClick">
+    </el-pagination>
+</div>
+
+
+<div id="el_userInfoDialog">
+    <el-dialog :title="title" :visible.sync="userInfoDialogVisible">
+        <el-row :gutter="25">
+            <el-col :span="25">
+                <el-card class="box-card" style="height: auto;padding-top:10px">
+                    <el-form :model="userInfoDialogData" :rules="rules">
+                        <el-row :gutter="24">
+                            <el-col :span="8">
+                                <el-form-item label="用户编号" prop="userId">
+                                    <el-input :disabled="dialogType==0?false:true" v-model="userInfoDialogData.userId">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="用户姓名" prop="username">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.username">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="英文名称" prop="englishName">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.englishName">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+
+                        <el-row :gutter="24">
+                            <el-col :span="8">
+                                <el-form-item label="用户性别" prop="sex">
+                                    <el-select :disabled="isDisabled" v-model="userInfoDialogData.sex">
+                                        <el-option label="男" value="1"></el-option>
+                                        <el-option label="女" value="2"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="用户识别码" prop="identifyNO">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.identifyNO">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="所属机构ID" prop="orgId" v-show="false">
+                                    <el-input v-model="userInfoDialogData.orgId">
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item label="所属机构" prop="orgChiName">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.orgChiName" :readonly="true" @focus="chooseOrg">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="24">
+                            <el-col :span="8" v-show="false">
+                                <el-form-item label="用户类型" prop="userType">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.userType">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="用户状态" prop="status">
+                                    <el-select :disabled="isDisabled" v-model="userInfoDialogData.status">
+                                        <el-option label="启用" value="0"></el-option>
+                                        <el-option label="停用" value="1"></el-option>
+                                        <el-option label="注销" value="2"></el-option>
+                                        <el-option label="锁定" value="8"></el-option>
+                                        <el-option label="被交接" value="9"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8" v-show="false">
+                                <el-form-item label="登录方式" prop="loginType">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.loginType">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="邮箱" prop="email">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.email">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="联系地址" prop="address">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.address">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+
+                        <el-row :gutter="24">
+                            <el-col :span="8">
+                                <el-form-item label="手机号码" prop="cellphone">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.cellphone">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="办公电话" prop="phone">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.phone">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="关联角色" prop="roleId">
+                                    <el-select v-model="userInfoDialogData.roleId" :disabled="isDisabled">
+                                        <el-option v-for="item in selectRoleData" :key="item.id" :label="item.label" :value="item.id"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="24">
+                            <el-col :span="8" v-show="false">
+                                <el-form-item label="用户等级" prop="userLevel">
+                                    <el-input :disabled="isDisabled" v-model="userInfoDialogData.userLevel">
+                                    </el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
+                </el-card>
+            </el-col>
+        </el-row>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="userInfoDialogVisible = false" v-show="dialogType==1?true:false">关 闭
+            </el-button>
+            <el-button @click="userInfoDialogVisible = false" v-show="dialogType==1?false:true">取消</el-button>
+            <el-button type="primary" @click="addUserInfoSubmit" v-show="dialogType==1?false:true">确定</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+<!--选择机构弹出层-->
+<div id="el_userOrgDialog">
+    <el-dialog title="选择所属机构" :visible.sync="chooseOrgDialogVisible">
+        <el-card class="box-card" style="padding:20px">
+            <el-input placeholder="输入关键字进行过滤" v-model="filterText">
+            </el-input>
+        </el-card>
+        <el-car class="box-card">
+            <el-tree class="filter-tree" :data="orgTreeData" :filter-node-method="filterNode" :props="orgTreeProps" ref="orgTree" expand-on-click-node="false"
+                @node-click="handleNodeClick">
+            </el-tree>
+        </el-car>
+
+    </el-dialog>
+</div>
+<style scoped>
+    .cell {
+        text-align: center;
+    }
+</style>

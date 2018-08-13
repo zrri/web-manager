@@ -1,0 +1,5 @@
+<package name="filter-auth" abstract="true">
+	<!-- 权限 filter -->
+	<filter name="AuthFilter"  class="service.common.filter.AuthFilter" scope="singleton">
+    </filter>
+</package>

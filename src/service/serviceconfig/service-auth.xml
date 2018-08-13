@@ -1,0 +1,20 @@
+<package name="service" namespace="auth" extends="filter-base.xml,filter-padLog.xml,filter-retcode.xml">
+	
+	<!-- 新增菜单节点 -->
+	<service name="addMenuTree" class="service.auth.services.f06.f0601.F0601" method="execute">
+	</service>	
+	
+	<!-- 查询菜单列表 -->
+	<service name="queryMenuTreeList" class="service.auth.services.f06.f0605.F0605" method="execute">
+	</service>	
+	
+	<!-- 新增功能节点 -->
+	<service name="addModuleInfo" class="service.auth.services.f07.f0701.F0701" method="execute">
+	</service>	
+	
+	<!-- 查询功能列表 -->
+	<service name="queryModuleList" class="service.auth.services.f07.f0705.F0705" method="execute">
+	</service>	
+	 
+
+</package>

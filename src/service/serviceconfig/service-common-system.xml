@@ -1,0 +1,13 @@
+<package name="commonsystem" namespace="org" extends="filter-base.xml,filter-verify.xml,filter-auth.xml,filter-padLog.xml,filter-retcode.xml">
+	<service name="queryorginfo" class="service.common.system.CommonSystem" method="queryOrgInfo">
+	</service>	
+	
+	<service name="updateOrgInfo" class="service.common.system.CommonSystem" method="updateOrgInfo">
+	</service>	
+	
+	<service name="addOrgInfo" class="service.common.system.CommonSystem" method="addOrgInfo">
+	</service>
+	
+	<service name="removeOrgInfo" class="service.common.system.CommonSystem" method="removeOrgInfo">
+	</service>
+</package>

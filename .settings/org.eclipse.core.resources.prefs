@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//WebRoot/.packageinfo=UTF-8
+encoding//src/service/auth/core/padapplication/.packageinfo=UTF-8
+encoding//src/service/auth/core/padorg/.packageinfo=UTF-8
+encoding//src/service/auth/core/padrole/.packageinfo=UTF-8
+encoding//src/service/auth/core/padrolefunc/.packageinfo=UTF-8
+encoding//src/service/auth/core/padteller/.packageinfo=UTF-8
+encoding//src/service/auth/core/padtellerrole/.packageinfo=UTF-8
+encoding//src/service/common/.packageinfo=UTF-8
+encoding//src/service/common/system/.packageinfo=UTF-8
+encoding/<project>=UTF-8

@@ -1,0 +1,17 @@
+<package name="auth" namespace="org" extends="filter-base.xml,filter-checklogin.xml,filter-verify.xml,filter-auth.xml,filter-padLog.xml,filter-retcode.xml">
+	<service name="queryorginfo" class="service.auth.services.f01.f0105.F0105" method="execute">
+	</service>	
+	
+	<service name="queryOrgTree" class="service.auth.services.f01.f0105.F0105" method="queryOrgTree">
+	</service>
+	
+	<service name="updateOrgInfo" class="service.auth.services.f01.f0105.F0105" method="updateOrgInfo">
+	</service>	
+	
+	<service name="addOrgInfo" class="service.auth.services.f01.f0105.F0105" method="addOrgInfo">
+	</service>
+	
+	<service name="deleteOrgInfoList" class="service.auth.services.f01.f0105.F0105" method="deleteOrgInfoList">
+	</service>
+	
+</package>

@@ -1,0 +1,20 @@
+<package name="auth" namespace="pad_role" extends="filter-base.xml,filter-checklogin.xml,filter-verify.xml,filter-auth.xml,filter-padLog.xml,filter-retcode.xml">
+	<service name="queryRoleInfoList" class="service.auth.services.padrole.Pad_RoleManagement" 
+		method="queryRoleInfoList">
+	</service>
+	<service name="queryPadFuncGroupTreeList" class="service.auth.services.padrole.Pad_RoleManagement" 
+		method="queryPadFuncGroupTreeList">
+	</service>
+	<service name="deleteRolesInfo" class="service.auth.services.padrole.Pad_RoleManagement" 
+		method="deleteRolesInfo">
+	</service>
+	<service name="addRoleInfo" class="service.auth.services.padrole.Pad_RoleManagement" 
+		method="addRoleInfo">
+	</service>
+	<service name="updateRoleInfo" class="service.auth.services.padrole.Pad_RoleManagement" 
+		method="updateRoleInfo">
+	</service>
+
+
+
+</package>

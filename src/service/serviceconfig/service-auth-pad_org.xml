@@ -1,0 +1,15 @@
+<package name="auth" namespace="pad_org" extends="filter-base.xml,filter-checklogin.xml,filter-verify.xml,filter-auth.xml,filter-padLog.xml,filter-retcode.xml">
+	<service name="addPadOrgInfo" class="service.auth.services.padorg.Pad_OrgManagement" 
+		method="addPadOrgInfo">
+	</service>
+	<service name="queryPadOrgInfos" class="service.auth.services.padorg.Pad_OrgManagement" 
+		method="queryPadOrgInfos">
+	</service>
+	<service name="deleteOrgInfoList" class="service.auth.services.padorg.Pad_OrgManagement" 
+		method="deleteOrgInfoList">
+	</service>
+	<service name="updatePadOrgInfo" class="service.auth.services.padorg.Pad_OrgManagement" 
+		method="updatePadOrgInfo">
+	</service>
+
+</package>

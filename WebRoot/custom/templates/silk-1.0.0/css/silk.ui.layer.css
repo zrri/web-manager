@@ -1,0 +1,217 @@
+
+/*
+  sk layer mobile
+*/
+
+.sk-m-layer{position:relative; z-index: 19891014;}
+.sk-m-layer *{-webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box;}
+.sk-m-layer .sk-m-layershade,
+.sk-m-layer .sk-m-layermain{position:fixed; left:0; top:0; width:100%; height:100%;}
+.sk-m-layer .sk-m-layershade{background-color:rgba(0,0,0, .3); pointer-events:auto;}
+.sk-m-layer .sk-m-layermain{display:table; pointer-events: none;}
+.sk-m-layer .sk-m-layermain .sk-m-layersection{display:table-cell; vertical-align:middle; text-align:center;}
+.sk-m-layer .sk-m-layerchild{position:relative; display:inline-block; pointer-events:auto;  -webkit-overflow-scrolling: touch;}
+.sk-m-layer .sk-m-layerchild{-webkit-animation-fill-mode: both; animation-fill-mode: both; -webkit-animation-duration: .2s; animation-duration: .2s;}
+
+/* 自定义layer*/
+.sk-m-layer-wrap {display: none}
+.sk-m-layer-content{}
+
+/* 弹出动画scale */
+@-webkit-keyframes sk-m-anim-scale { /* 默认 */
+    0% {opacity: 0; -webkit-transform: scale(.5); transform: scale(.5);}
+    100% {opacity: 1; -webkit-transform: scale(1); transform: scale(1);}
+}
+@keyframes sk-m-anim-scale { /* 默认 */
+    0% {opacity: 0; -webkit-transform: scale(.5); transform: scale(.5);}
+    100% {opacity: 1; -webkit-transform: scale(1); transform: scale(1);}
+}
+.sk-m-anim-scale{animation-name:  sk-m-anim-scale; -webkit-animation-name:  sk-m-anim-scale;}
+
+/* 弹出动画up */
+@-webkit-keyframes sk-m-anim-up{
+    0%{opacity: 0; -webkit-transform: translateY(53.333333333333336rem); transform: translateY(53.333333333333336rem)}
+    100%{opacity: 1; -webkit-transform: translateY(0); transform: translateY(0);}
+}
+@keyframes sk-m-anim-up{
+    0%{opacity: 0; -webkit-transform: translateY(53.333333333333336rem); transform: translateY(53.333333333333336rem)}
+    100%{opacity: 1; -webkit-transform: translateY(0); transform: translateY(0);}
+}
+.sk-m-anim-up{-webkit-animation-name: sk-m-anim-up;animation-name: sk-m-anim-up}
+
+/* loading */
+@-webkit-keyframes sk-m-anim-loading{
+    0%,80%,100%{transform:scale(0); -webkit-transform:scale(0);}
+    40%{transform:scale(1); -webkit-transform:scale(1);}
+}
+@keyframes sk-m-anim-loading{
+    0%,80%,100%{transform:scale(0); -webkit-transform:scale(0);}
+    40%{transform:scale(1); -webkit-transform:scale(1);}
+}
+.sk-m-anim-loading{-webkit-animation-name: sk-m-anim-loading;animation-name: sk-m-anim-loading}
+
+
+.sk-m-layercont{padding: 3.3333333333333335rem 2rem; line-height: 1.4666666666666666rem; text-align:center;}
+.sk-m-layercont-empty{padding: 0px 0px!important;}
+/*type为0则为弹出框*/
+.sk-m-layer0 .sk-m-layerbtn{display: box; display: -moz-box; display: -webkit-box; width: 100%; position:relative; height: 3.3333333333333335rem; line-height: 3.3333333333333335rem; font-size: 0; text-align:center;  border-top:1px solid #D0D0D0; background-color: #F2F2F2; border-radius: 0 0 5px 5px;}
+.sk-m-layer0 .sk-m-layerbtn span{position:relative; display: block; -moz-box-flex: 1; box-flex: 1; -webkit-box-flex: 1;  text-align:center; font-size:0.9333333333333333rem; border-radius: 0 0 5px 5px; cursor:pointer;}
+.sk-m-layer0 .sk-m-layerbtn span[yes]{color: #40AFFE;}
+.sk-m-layer0 .sk-m-layerbtn span[no]{border-right: 1px solid #D0D0D0; border-radius: 0 0 0 5px;}
+.sk-m-layer0 .sk-m-layerbtn span:active{background-color: #F6F6F6;}
+
+/* dialog提示框风格 */
+.sk-m-layer0 .sk-m-layer-dialog{ font-family: Helvetica, arial, sans-serif;width: 90%; max-width: 42.666666666666664rem;text-align:left; background-color:#fff; font-size:0.9333333333333333rem; border-radius: 5px; box-shadow: 0 0 0.5333333333333333rem rgba(0, 0, 0, 0.1);  pointer-events:auto;  -webkit-overflow-scrolling: touch;}
+.sk-m-layer0 .sk-m-layer-dialog .sk-m-layertitle{padding: 0 0.6666666666666666rem; height: 4rem; line-height: 4rem; font-size:1.0666666666666667rem; font-weight: 400;  border-radius: 5px 5px 0 0; text-align: center;}
+.sk-m-layer0 .sk-m-layer-dialog .sk-m-layerbtn span{ text-overflow:ellipsis; overflow:hidden; white-space:nowrap;}
+
+/* 通用提示 */
+.sk-m-layer0 .sk-m-layer-msg{ font-family: Helvetica, arial, sans-serif;width: auto; max-width: 90%; margin: 0 auto; bottom: -10rem; background-color: rgba(0,0,0,.7); color: #fff;font-size:0.9333333333333333rem; border-radius: 5px; box-shadow: 0 0 0.5333333333333333rem rgba(0, 0, 0, 0.1);  pointer-events:auto;  -webkit-overflow-scrolling: touch;}
+.sk-m-layer0 .sk-m-layer-msg .sk-m-layercont{padding: 0.6666666666666666rem 1.3333333333333333rem;}
+
+
+/* 底部对话框风格 */
+.sk-m-layer0 .sk-m-layer-footer{ font-family: Helvetica, arial, sans-serif;position: fixed; width: 95%; max-width: 100%; margin: 0 auto; left:0; right: 0; bottom: 0.6666666666666666rem; background: none;}
+.sk-m-layer0 .sk-m-layer-footer .sk-m-layercont{padding: 1.3333333333333333rem; border-radius: 5px 5px 0 0; background-color: rgba(255,255,255,.8);}
+.sk-m-layer0 .sk-m-layer-footer .sk-m-layerbtn{display: block; height: auto; background: none; border-top: none;}
+.sk-m-layer0 .sk-m-layer-footer .sk-m-layerbtn span{background-color: rgba(255,255,255,.9);border-top: 1px solid #c2c2c2;}
+.sk-m-layer0 .sk-m-layer-footer .sk-m-layerbtn span:nth-last-child(2){border-top: 1px solid #c2c2c2; border-radius: 0 0 5px 5px;}
+.sk-m-layer0 .sk-m-layer-footer .sk-m-layerbtn span:nth-last-child(1){margin-top: 0.6666666666666666rem; border-radius: 5px;}
+.sk-m-layer0 .sk-m-layer-footer .sk-m-layerbtn span[first]{border-radius: 5px 5px 0 0;}
+/*type为1则为自定义页面*/
+.sk-m-layer1 .sk-m-layerchild{border:none; border-radius:0;}
+.sk-m-layer1 .sk-m-layercont{padding:0; text-align:left;}
+
+/*type为2则为loading*/
+.sk-m-layer2 .sk-m-layerchild{width:auto; max-width:17.333333333333332rem; min-width:2.6666666666666665rem; border:none; background: none; box-shadow: none; color:#fff;}
+.sk-m-layer2 .sk-m-layercont{text-align:center; padding: 0; line-height: 0;}
+.sk-m-layer2 .sk-m-layercont i{width:1.6666666666666667rem; height:1.6666666666666667rem; margin-left:0.5333333333333333rem; display:inline-block; background-color:#fff; border-radius:100%;}
+.sk-m-layer2 .sk-m-layercont p{margin-top: 1.3333333333333333rem;}
+.sk-m-layer2 .sk-m-layercont i{-webkit-animation: sk-m-anim-loading 1.4s infinite ease-in-out; animation: sk-m-anim-loading 1.4s infinite ease-in-out; -webkit-animation-fill-mode: both; animation-fill-mode: both;}
+.sk-m-layer2 .sk-m-layercont i:first-child{margin-left:0; -webkit-animation-delay: -.32s; animation-delay: -.32s;}
+.sk-m-layer2 .sk-m-layercont i.sk-m-layerload{-webkit-animation-delay: -.16s; animation-delay: -.16s;}
+.sk-m-layer2 .sk-m-layercont>div{line-height:1.4666666666666666rem; padding-top:0.4666666666666667rem; margin-bottom:1.3333333333333333rem; font-size: 0.9333333333333333rem;}
+
+/*type为3则为image展示页面*/
+.sk-m-layer3 .sk-m-layerchild{border:none; border-radius:0;width:auto; max-width:90%;}
+.sk-m-layer3 .sk-m-layerchild img{max-width: 100%;}
+
+/*type为4则为progress展示页面*/
+.sk-m-layer4 .sk-m-layerchild{border:none; border-radius:0;width:auto; max-width:90%;text-align: center}
+.sk-m-layer4 .sk-m-layerprogress{
+    margin: 3.3333333333333335rem auto 0.6666666666666666rem;
+    width: 20rem;
+    height: 1.6666666666666667rem;
+    border-radius: 14px;
+    border-bottom: 1px solid #fff;
+    border-top: 1px solid #999;
+    background: #ccc;
+    overflow: hidden;
+    position: relative;
+}
+
+.sk-m-layer4 .sk-m-layerprogress.sk-m-layer-color-gray{
+    background: #999;
+}
+
+.sk-m-layer4 .sk-m-layerprogress-bar{
+    height: inherit;
+    width: 0%;
+    border-radius: inherit;
+    position: relative;
+    overflow: hidden;
+    transition: width .2s;
+    -moz-transition: width .2s; /* Firefox 4 */
+    -webkit-transition: width .2s; /* Safari 和 Chrome */
+    -o-transition: width .2s; /* Opera */
+}
+
+.sk-m-layer4 .sk-m-layerprogress-stripes{
+    width: inherit;
+    height: inherit;
+    font-size: 12rem;
+    font-weight: bold;
+    margin-top: -3.3333333333333335rem;
+    letter-spacing: -0.9333333333333333rem;
+}
+
+.sk-m-layer4 .sk-m-layerprogress-percentage{
+    position: absolute;
+    top: 0.2rem;
+    right: 0.3333333333333333rem;
+    font-weight: bold;
+    font-size: 1.0666666666666667rem;
+}
+
+
+/***************************************/
+/* BELOW HERE IS SOLELY FOR AESTHETICS */
+/*_____________________________________*/
+
+/*** COLOR SCHEMES ***/
+
+/* RED */
+.sk-m-layer4 .sk-m-layer-color-red .sk-m-layerprogress-bar{
+    background: #e74c3c;
+}
+.sk-m-layer4 .sk-m-layer-color-red .sk-m-layerprogress-stripes{
+    color: #c0392b;
+}
+.sk-m-layer4 .sk-m-layer-color-red .sk-m-layerprogress-percentage{
+    color: #eee;
+}
+
+/* BLUE */
+.sk-m-layer4 .sk-m-layer-color-blue .sk-m-layerprogress-bar{
+    background: #3498db;
+}
+.sk-m-layer4 .sk-m-layer-color-blue .sk-m-layerprogress-stripes{
+    color: #2980b9;
+}
+.sk-m-layer4 .sk-m-layer-color-blue .sk-m-layerprogress-percentage{
+    color: #eee;
+}
+
+/* GREEN */
+.sk-m-layer4 .sk-m-layer-color-green .sk-m-layerprogress-bar{
+    background: #2ecc71;
+}
+.sk-m-layer4 .sk-m-layer-color-green .sk-m-layerprogress-stripes{
+    color: #27ae60;
+}
+.sk-m-layer4 .sk-m-layer-color-green .sk-m-layerprogress-percentage{
+    color: #fff;
+}
+
+/* YELLOW */
+.sk-m-layer4 .sk-m-layer-color-yellow .sk-m-layerprogress-bar{
+    background: #f1c40f;
+}
+.sk-m-layer4 .sk-m-layer-color-yellow .sk-m-layerprogress-stripes{
+    color: #f39c12;
+}
+.sk-m-layer4 .sk-m-layer-color-yellow .sk-m-layerprogress-percentage{
+    color: #fff;
+}
+
+/* PURPLE */
+.sk-m-layer4 .sk-m-layer-color-purple .sk-m-layerprogress-bar{
+    background: #9b59b6;
+}
+.sk-m-layer4 .sk-m-layer-color-purple .sk-m-layerprogress-stripes{
+    color: #8e44ad;
+}
+.sk-m-layer4 .sk-m-layer-color-purple .sk-m-layerprogress-percentage{
+    color: #eee;
+}
+
+/* GRAY */
+.sk-m-layer4 .sk-m-layer-color-gray .sk-m-layerprogress-bar{
+    background: #ecf0f1;
+}
+.sk-m-layer4 .sk-m-layer-color-gray .sk-m-layerprogress-stripes{
+    color: #bdc3c7;
+}
+.sk-m-layer4 .sk-m-layer-color-gray .sk-m-layerprogress-percentage{
+    color: #333;
+}

@@ -1,0 +1,35 @@
+<package name="auth" namespace="padFunc" extends="filter-base.xml,filter-verify.xml,filter-retcode.xml">
+	<service name="addGroupInfo" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="addGroupInfo">
+	</service>
+	<service name="editGroupInfo" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="editGroupInfo">
+	</service>
+	
+	<service name="queryGroupsFullTreeList" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="queryGroupsFullTreeList">
+	</service>
+	
+	<service name="deleteGroupsAndGroupFuncs" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="deleteGroupsAndGroupFuncs">
+	</service>
+	 <service name="queryGroupInfoList" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="queryGroupInfoList">
+	</service>
+	<service name="deleteFuncList" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="deleteFuncList">
+	</service>
+	 <service name="deleteFunctionFromGroup" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="deleteFunctionFromGroup">
+	</service>
+	<service name="addFunctionToGroup" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="addFunctionToGroup">
+	</service>
+	<service name="isExistGroupIDorName" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="isExistGroupIDorName">
+	</service>
+	<service name="isExistFuncID" class="service.auth.services.padapplication.Pad_ApplicationManagement"
+			method="isExistFuncID">
+	</service>
+	
+</package>

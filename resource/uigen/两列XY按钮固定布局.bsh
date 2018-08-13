@@ -1,0 +1,244 @@
+import org.apache.commons.lang3.StringUtils;
+import org.eclipse.core.runtime.Assert;
+
+import cn.com.bankit.ide.phoenix.contracts.uigen.model.*;
+import cn.com.bankit.ide.phoenix.core.util.StringHelper;
+import cn.com.bankit.ide.phoenix.model.ModelElement;
+import cn.com.bankit.ide.phoenix.ui.contract.IControlDescriptor;
+import cn.com.bankit.ide.phoenix.ui.controls.containers.group.Group;
+import cn.com.bankit.ide.phoenix.ui.controls.containers.group.GroupDescriptor;
+import cn.com.bankit.ide.phoenix.ui.controls.display.label.Label;
+import cn.com.bankit.ide.phoenix.ui.controls.display.label.LabelDescriptor;
+import cn.com.bankit.ide.phoenix.ui.controls.operation.pushButton.PushButton;
+import cn.com.bankit.ide.phoenix.ui.controls.operation.pushButton.PushButtonDescriptor;
+import cn.com.bankit.ide.phoenix.ui.controls.data.tables.table.Table;
+import cn.com.bankit.ide.phoenix.ui.layouts.*;
+import cn.com.bankit.ide.phoenix.ui.layouts.grid.GridLayout;
+import cn.com.bankit.ide.phoenix.ui.model.Container;
+import cn.com.bankit.ide.phoenix.ui.controls.containers.panel.*;
+import cn.com.bankit.ide.phoenix.ui.model.Control;
+import cn.com.bankit.ide.phoenix.ui.model.UIDesignerStore;
+
+// 列数，控件垂直间距，控件水平行间距，界面总宽度，容器内控件上边距，左边距
+final int COL_CNT = 2, COL_SPACING = 8, LINE_SPACE = 8, MAIN_WIDTH = 800, TOP_MARGIN = 5, LEFT_MARGIN = 5;
+
+// 提交按钮的x坐标
+final int SUBMIT_LEFT = 540;
+
+// 必备函数，模板名称
+String getName() {
+	return "两列XY按钮固定布局";
+}
+
+// 必备函数，模板的详细描述
+String getDescription() {
+	return this.getName();
+}
+
+// 界面生成模型和Yuml模型之间的转换
+void transform(String tradeName, String baseTrade, UIGenCategory rootCategory, ModelElement root) {	
+	Assert.isTrue(root instanceof Container);
+	container = (Container) root;
+	store = root.getStore();
+	// 根节点坐标
+	container.setLocation(TOP_MARGIN, LEFT_MARGIN); 
+	container.setSize(800,600);
+	
+	// Composite布局问题 GridLayout
+	gridLayout = LayoutBase.createLayoutByName("GridLayout", store);
+	gridLayout.setColumnsEqualWidth(false);
+	gridLayout.setNumColumns(1);
+	gridLayout.setHorizontalSpacing(0);
+	gridLayout.setVerticalSpacing(0);
+	container.setLayout(gridLayout);
+	
+	// 创建tradePanel
+	panelDescriptor = new PanelDescriptor();
+	tradePanel = (Panel)panelDescriptor.createControl(store);
+	tradePanel.setLayout(new XYLayout(store));
+	tradePanel.setSize(800, 570);
+	tradePanel.setName("tradePanel");
+	tradePanel.setPropValue("layoutData", 
+	"GridLayout,grabExcessHorizontalSpace=true,grabExcessVerticalSpace=true,horizontalAlignment=fill,verticalAlignment=fill,verticalSpan=1,horizontalSpan=1");
+	container.addChild(tradePanel);
+	
+	
+	// tradePanel内部的控件生成
+	initCursor = new UIGenCursor(TOP_MARGIN, TOP_MARGIN);
+	writeElements(rootCategory, tradePanel, initCursor);
+	
+	// 创建commitPanel
+	commitPanel = (Panel)panelDescriptor.createControl(store);
+	commitPanel.setLayout(new XYLayout(store));
+	commitPanel.setSize(800, 30);
+	commitPanel.setName("commitPanel");
+	commitPanel.setPropValue("layoutData", 
+	"GridLayout,grabExcessHorizontalSpace=false,grabExcessVerticalSpace=false,horizontalAlignment=fill,verticalAlignment=center ,verticalSpan=1,horizontalSpan=1");
+	container.addChild(commitPanel);
+	
+	descriptor = new PushButtonDescriptor();
+	
+	// 提交按钮
+	btnSubmit = (PushButton) descriptor.createControl(store);
+	commitPanel.addChild(btnSubmit);
+	btnSubmit.setName("btnSubmit");
+	btnSubmit.setLocation(SUBMIT_LEFT, LINE_SPACE);
+	descriptor.init(btnSubmit);
+	btnSubmit.setText("提交");
+
+	// 取消按钮
+	btnCancel = (PushButton) descriptor.createControl(store);
+	commitPanel.addChild(btnCancel);
+	btnCancel.setName("btnCancel");
+	btnCancel.setLocation(btnSubmit.getLocation().getX()
+			+ btnSubmit.getSize().getX() + COL_SPACING, btnSubmit
+			.getLocation().getY());
+	descriptor.init(btnCancel);
+	btnCancel.setText("取消");
+}
+
+/*
+ * 针对一组元素生成界面
+ */
+Control writeElements(UIGenElement parent, Container container, UIGenCursor initCursor) {
+	elements = parent.getElements();
+	lastControl = null;
+	for (UIGenElement e : elements) {
+		if (!e.isGenUI())
+			continue;
+
+		if (e instanceof UIGenField)
+			lastControl = writeField((UIGenField) e, container, initCursor);
+		else if (e instanceof UIGenCategory)
+			lastControl = writeCategory((UIGenCategory) e, container, initCursor);
+	}
+	return lastControl;
+}
+
+/**
+ * 生成Group
+ * 
+ * @param c
+ * @param rootComposite
+ * @param initPos
+ */
+Control writeCategory(UIGenCategory category, Container container, UIGenCursor initCursor) {
+	if (category.getChildren().length == 0)
+		return;
+	store = container.getStore();
+		
+	// 一个组要对应生成一个Group, title绑定的Key是上下文Category的名称
+	varName = "group_" + category.getDataPath();
+	gd = new GroupDescriptor();
+	group = (Group) gd.createControl(store);
+	group.setName(varName);
+	if (!StringHelper.isNullOrEmpty(category.getDescription()))
+		group.setTitle(category.getDescription());
+	group.setLocation(LEFT_MARGIN, initCursor.getY());
+	group.setLayout(new XYLayout(store));
+
+	localCursor = new UIGenCursor(LEFT_MARGIN, TOP_MARGIN);
+	lastControl = writeElements(category, group, localCursor);
+	
+	group.setSize(MAIN_WIDTH, localCursor.getY() + TOP_MARGIN + 20 // Border
+		+ (localCursor.getColumn() != 0 ? lastControl.getHeight() + LINE_SPACE : 0)); 
+
+	// 为以后的控件设好位置
+	container.addChild(group);
+	initCursor.incrementY(group.getHeight() + LINE_SPACE);
+	return group;
+}
+
+/*
+ * 判断是否是大型控件
+ */
+boolean isLargeControl(UIGenField uf) {
+	String controlName = uf.getControlName();
+	return StringUtils.contains(controlName, "Table") || StringUtils.contains(controlName, "List");
+}
+
+/*
+ * 创建主要的输入场
+ */
+Control createFieldControl(UIGenField uf, Container container) {
+	String varName = uf.getVarName();
+	UIDesignerStore store = (UIDesignerStore) container.getStore();
+	IControlDescriptor cd = store.getDescriptor(uf.getControlName());
+
+	c = cd.createControl(store);
+	c.setName(varName);
+	c.setPropValue("contextID", uf.getDataPath());
+	cd.init(c);
+	if(c instanceof Table)
+		c.addColumnsFrom(uf.getGenColumns());
+	
+	container.addChild(c);
+	return c;
+}
+
+/*
+ * 创建Label
+ */
+Label createLabel(UIGenField uf, Container container) {
+	varName = "label_" + uf.getDataPath();
+	desc = uf.getDescription();
+	if (StringHelper.isNullOrEmpty(desc))
+		desc = uf.getName();
+
+	ld = new LabelDescriptor();
+	Label label = (Label) ld.createControl(container.getStore());
+	label.setName(varName);
+	ld.init(label);
+	label.setText(desc);
+	container.addChild(label);
+
+	return label;
+}
+
+/**
+ * 生成一个输入场相关的Label和主输入控件
+ * 
+ * @param c
+ * @param rootComposite
+ * @param cursor
+ */
+Control writeField(UIGenField field, Container container, UIGenCursor cursor) {
+	// 判断是否是大型控件(Table, List等)
+	boolean islarge = isLargeControl(field);
+
+	// 构造Label模型
+	label = createLabel(field, container);
+	int labelHeight = label.getHeight();
+
+	if (islarge) {
+		field.setSingleLine(false); // 大控件的独占一行属性是无效的
+		if (cursor.getColumn() != 0) // 大控件要新开一行生成
+			cursor.goToNextRow(LEFT_MARGIN, LINE_SPACE + labelHeight);
+	} else if (cursor.hasPostNewLine()) // 上个控件要求独占一行
+		cursor.goToNextRow(LEFT_MARGIN, LINE_SPACE + labelHeight);
+
+	// 独占一行的字段，如果当前不是第一列，直接换行
+	if (field.isSingleLine() && cursor.getColumn() != 0)
+		cursor.goToNextRow(LEFT_MARGIN, LINE_SPACE + labelHeight);
+
+	label.setLocation(cursor.getX(), cursor.getY());
+
+	if (islarge) // 大控件和Label不在一行
+		cursor.goToNextRow(LEFT_MARGIN, LINE_SPACE + labelHeight);
+
+	// 构造主要的输入场控件
+	fieldControl = createFieldControl(field, container);
+	labelWidth = label.getWidth();
+	fieldControl.setLocation(label.getLocation().getX()
+			+ (islarge ? 0 : labelWidth + COL_SPACING), cursor.getY());
+
+	if (islarge) // 大控件随后要换行
+		cursor.goToNextRow(LEFT_MARGIN, fieldControl.getHeight() + LINE_SPACE);
+	else {
+		cursor.setPostNewLine(field.isSingleLine());
+		cursor.gotoNextColumn(COL_CNT, LEFT_MARGIN, MAIN_WIDTH / COL_CNT,
+				fieldControl.getHeight() + LINE_SPACE);
+	}
+	
+	return fieldControl;
+}

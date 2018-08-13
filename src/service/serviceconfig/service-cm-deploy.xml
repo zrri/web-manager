@@ -1,0 +1,9 @@
+<!--继承的名字是文件名,继承的文件必须为abstract为true的文件-->
+<package name="cm" namespace="deploy" extends="filter-base.xml,filter-verify.xml,filter-checklogin.xml,filter-retcode.xml">
+	<service name="listVersion" class="service.cm.services.deploy.DeployService"
+			method="listVersion">
+	</service>
+	<service name="startDeploy" class="service.cm.services.deploy.DeployService"
+			method="startDeploy">
+	</service>
+</package>

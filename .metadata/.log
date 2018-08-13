@@ -1,0 +1,52 @@
+!SESSION 2018-05-02 19:03:52.131 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_29
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=zh_CN
+Command-line arguments:  -os win32 -ws win32 -arch x86 -data F:\fansuchao\Fansuchao\compony\bankit\marketSupport\yfzx\managerplatform\web-manager
+
+!ENTRY org.eclipse.ui 4 4 2018-05-02 19:03:54.092
+!MESSAGE 部件已在页面布局中存在：org.eclipse.ui.views.ProblemView。
+
+!ENTRY org.eclipse.osgi 2 1 2018-05-02 19:03:54.378
+!MESSAGE NLS unused message: WhiteSpaceTabPage_try in: org.eclipse.jdt.internal.ui.preferences.formatter.FormatterMessages
+
+!ENTRY org.eclipse.ui 4 4 2018-05-02 19:04:35.596
+!MESSAGE Invalid preference page path: XML Syntax
+!SESSION 2018-05-02 19:05:05.364 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_29
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=zh_CN
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.core.runtime 2 0 2018-05-02 19:05:55.169
+!MESSAGE 未安装授权基础结构（org.eclipse.core.runtime.compatibility.auth）。
+!STACK 0
+java.lang.NoClassDefFoundError: org/eclipse/core/internal/runtime/auth/AuthorizationHandler
+	at org.eclipse.core.runtime.Platform.getAuthorizationInfo(Platform.java:646)
+	at org.tigris.subversion.subclipse.core.repo.SVNRepositoryLocation.retrieveUsername(SVNRepositoryLocation.java:316)
+	at org.tigris.subversion.subclipse.core.repo.SVNRepositoryLocation.getUsername(SVNRepositoryLocation.java:263)
+	at org.tigris.subversion.subclipse.core.repo.SVNRepositoryLocation.getSVNClient(SVNRepositoryLocation.java:278)
+	at org.tigris.subversion.subclipse.core.repo.SVNRepositoryLocation.validateConnection(SVNRepositoryLocation.java:408)
+	at org.tigris.subversion.subclipse.ui.wizards.NewLocationWizard$1.run(NewLocationWizard.java:83)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Caused by: java.lang.ClassNotFoundException: org.eclipse.core.internal.runtime.auth.AuthorizationHandler
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:513)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:429)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:417)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:247)
+	... 7 more
+
+!ENTRY org.eclipse.ui 4 4 2018-05-02 19:06:20.408
+!MESSAGE Invalid preference page path: XML Syntax
+!SESSION 2018-08-13 19:43:44.645 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_29
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=zh_CN
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.ui 4 4 2018-08-13 19:46:58.794
+!MESSAGE Invalid preference page path: XML Syntax

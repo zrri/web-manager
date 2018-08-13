@@ -1,0 +1,206 @@
+<!-- 必须全局拥有唯一的id -->
+<div id="el_orgmanagement">
+    <el-row :gutter="23">
+        <el-col :span="13">
+            <el-card class="box-card" style="height:700px;overflow:auto;">
+                <div slot="header" class="clearfix">
+                    <span>菜单</span>
+                </div>
+                <el-row :gutter="20" style="padding-top:20px">
+                    <el-col :span="13">
+                        <!-- 此部分树如何使用 -->
+                        <el-input
+                                placeholder="输入关键字进行过滤"
+                                v-model="filterText">
+                        </el-input>
+                    </el-col>
+                    <el-col :span="3">
+                        <el-button type="primary" @click="add()">添加</el-button>
+                    </el-col>
+                    <el-col :span="3">
+                        <el-button type="primary" @click="remove()">删除</el-button>
+                    </el-col>
+                    <el-col :span="3">
+                        <el-button type="primary" @click="addRootOrg()">添加根机构</el-button>
+                    </el-col>
+                </el-row>
+
+                <el-tree
+                        id="org-tree"
+                        class="filter-tree"
+                        :data="orgTreeData"
+                        :props="orgTreeProps"
+                        :filter-node-method="filterNode"
+                        ref="orgTree"
+
+                        highlight-current
+                        @check-change="handleCheckChange"
+                        @node-click="handleNodeClick" style="border:none">
+                </el-tree>
+            </el-card>
+        </el-col>
+
+        <el-col :span="10">
+            <el-card class="box-card" style="height:700px;overflow:auto;">
+                <div slot="header" class="clearfix">
+                    <span>详情</span>
+                </div>
+                <el-form :model="orgInfoFormData" :rules="rules" ref="orgInfoForm" label-width="100px"
+                         class="demo-ruleForm" style="padding-top:20px">
+                    <el-form-item label="机构编号" prop="orgId">
+                        <el-input v-model="orgInfoFormData.orgId" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="机构中文名" prop="orgChiName">
+                        <el-input v-model="orgInfoFormData.orgChiName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="机构英文名" prop="orgEngName">
+                        <el-input v-model="orgInfoFormData.orgEngName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="上级机构" prop="parentOrgId" v-show="false">
+                        <el-input v-model="orgInfoFormData.parentOrgId"></el-input>
+                    </el-form-item>
+                    <el-form-item label="上级机构名称" prop="parentOrgName" >
+                        <el-input v-model="orgInfoFormData.parentOrgName" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="机构级别" prop="orgLvl">
+                        <el-input v-model="orgInfoFormData.orgLvl" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="机构类型" prop="orgType">
+                        <el-input v-model="orgInfoFormData.orgType"></el-input>
+                    </el-form-item>
+                    <el-form-item label="创建日期" prop="createDate">
+                        <el-input v-model="orgInfoFormData.createDate" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="创建时间" prop="createTime">
+                        <el-input v-model="orgInfoFormData.createTime" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="更新日期" prop="updateDate">
+                        <el-input v-model="orgInfoFormData.updateDate" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="更新时间" prop="updateTime">
+                        <el-input v-model="orgInfoFormData.updateTime" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="状态" prop="status">
+                        <el-select v-model="orgInfoFormData.status">
+                            <el-option value="1" label="可用"></el-option>
+                            <el-option value="2" label="不可用"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="updateOrgInfo()">更新</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+
+        </el-col>
+
+    </el-row>
+</div>
+
+
+<!-- 添加机构弹窗 -->
+<div id="el_orgInfoDialog">
+    <el-dialog title="添加" :visible.sync="orgInfoDialogVisible">
+      <el-card>
+        <el-form :model="orgInfoFormData" :rules="rules">
+            <el-row :gutter="12" style="padding-top:20px">
+                <el-col :span="8">
+                    <el-form-item label="机构编号" prop="orgId">
+                        <el-input
+                                v-model="orgInfoFormData.orgId">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="机构中文名" prop="orgChiName">
+                        <el-input
+                                v-model="orgInfoFormData.orgChiName">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="机构英文名" prop="orgEngName">
+                        <el-input
+                                v-model="orgInfoFormData.orgEngName">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row :gutter="12">
+                <el-col :span="8" v-show="false">
+                    <el-form-item label="上级机构" prop="parentOrgId">
+                        <el-input
+                                v-model="orgInfoFormData.parentOrgId" readonly>
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8" >
+                    <el-form-item label="上级机构名称" prop="parentOrgName">
+                        <el-input
+                                v-model="orgInfoFormData.parentOrgName" disabled>
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="机构级别" prop="orgLvl">
+                        <el-input
+                                v-model="orgInfoFormData.orgLvl" disabled>
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="机构类型" prop="orgType">
+                        <el-input
+                                v-model="orgInfoFormData.orgType">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row :gutter="12">
+                <el-col :span="8" v-show="false">
+                    <el-form-item label="创建日期" prop="createDate">
+                        <el-input v-show="false"
+                                  v-model="orgInfoFormData.createDate">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="创建时间" prop="createTime"  v-show="false">
+                        <el-input
+                                  v-model="orgInfoFormData.createTime">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8" v-show="false">
+                    <el-form-item label="更新日期" prop="updateDate">
+                        <el-input
+                                  v-model="orgInfoFormData.updateDate">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="更新时间" prop="updateTime" v-show="false">
+                        <el-input
+                                  v-model="orgInfoFormData.updateTime">
+                        </el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="状态" prop="status">
+                        <el-select
+                                v-model="orgInfoFormData.status">
+                            <el-option label="可选" value="1"></el-option>
+                            <el-option label="不可选" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+      </el-card>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="orgInfoDialogVisible = false" >取消</el-button>
+            <el-button type="primary" @click="addOrgInfoSubmit">确定</el-button>
+        </div>
+    </el-dialog>
+</div>

@@ -1,0 +1,163 @@
+<!-- 必须全局拥有唯一的id -->
+<div id="el_host">
+  <!--<el-form-q form="query" :field-data="queryFields" search-table="mytable"></el-form-q>-->
+  <el-card class="box-card" style="padding-top:20px">
+    <el-form :inline="true"  ref="userInfoForm" class="demo-form-inline">
+      <el-form-item label="日期">
+        <el-input
+                placeholder="请输入日期"
+                prefix-icon="el-icon-search"
+                v-model="filterDate">
+        </el-input>
+      </el-form-item>
+      <el-form-item label="姓名">
+        <el-input
+                placeholder="请输入姓名"
+                prefix-icon="el-icon-search"
+                v-model="filterName">
+        </el-input>
+      </el-form-item>
+      <el-form-item label="地址">
+        <el-input
+                placeholder="请输入地址"
+                prefix-icon="el-icon-search"
+                v-model="filterAddress">
+        </el-input>
+      </el-form-item>
+    </el-form>
+  </el-card>
+
+  <el-card class="box-card" style="padding-top:10px">
+    <div class="yu-toolBar">
+        <el-button-group>
+          <el-button icon="plus" @click="createFn">新增</el-button>
+          <el-button icon="edit" @click="editFn">修改</el-button>
+          <el-button icon="yx-bin" @click="batchDelete">批量删除</el-button>
+        </el-button-group>
+    </div>
+  </el-card>
+
+  <el-table ref="mytable" row-class-name="rowClass" highlight-current-row=true :data="getHostData" :table-columns="tableColumns" @row-click="rowClick" @selection-change="handleSelectionChange" >
+    <el-table-column type="selection" width="65">
+    </el-table-column>
+    <el-table-column prop="hostOptions" label="操作" width="150">
+      <template scope="scope">
+          <el-button size="mini" type="info" icon="search" @click=handleShow(scope.$index,scope.row)></el-button>
+          <el-button size="mini" type="info" icon="edit" @click=handleEdit(scope.$index,scope.row)></el-button>
+          <el-button size="mini" type="danger" icon="delete" @click=handleDelete(scope.$index,scope.row)></el-button>
+        </template>
+      </template>
+    </el-table-column>
+
+    </el-table-column>
+    <el-table-column prop="HOSTIP" label="主机ip地址">
+    </el-table-column>
+    <el-table-column prop="FILEMODE" label="传输方式"  :formatter="getTransTypeName">
+    </el-table-column>
+    <el-table-column label="传输端口" prop="FILEPORT"></el-table-column>
+    <el-table-column label="传输用户名" prop="FILEUSERNAME"></el-table-column>
+    <el-table-column label="远程登录方式" prop="LOGINMODE" width="100"  :formatter="getLoginTypeName"></el-table-column>
+    <el-table-column label="远程登录端口" prop="LOGINPORT" width="100"></el-table-column>
+    <el-table-column label="远程登录用户名" prop="LOGINUSERNAME" width="110"></el-table-column>
+  </el-table>
+  <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="hostData.length"
+          :page-size="pageSize"
+          @size-change="sizeChange"
+          @current-change="currentChange"
+          @prev-click="prevClick"
+          @next-click="nextClick"
+          >
+  </el-pagination>
+</div>
+
+
+
+<div id="el_addHost">
+  <el-dialog :title="titleName" :visible.sync="addHostLayerVisible">
+    <el-card class="box-card" style="padding-top:20px">
+      <el-form :model="host" ref="hostInfoForm" label-position="top" :rules="rules">
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="主机IP" prop="HOSTIP">
+              <el-input :disabled="isDisabled" v-model="host.HOSTIP" :readonly="showOnly" autofocus=true></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="登录方式" prop="LOGINMODE">
+              <el-select v-model="host.LOGINMODE" placeholder="请选择" :disabled="showOnly">
+                <el-option
+                        v-for="item in loginGroupOptions"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="登录端口" prop="LOGINPORT">
+              <el-input v-model="host.LOGINPORT" autofocus=true :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!--第一行-->
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="登录用户" prop="LOGINUSERNAME">
+              <el-input v-model="host.LOGINUSERNAME" :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="登录密码" prop="LOGINPASSWORD">
+              <el-input type="password" v-model="host.LOGINPASSWORD" :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="传输方式" prop="FILEMODE">
+              <el-select v-model="host.FILEMODE" placeholder="请选择" :disabled="showOnly">
+                <el-option
+                        v-for="item in tansportGroupOptions"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!--第二行-->
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="传输端口" prop="FILEPORT">
+              <el-input v-model="host.FILEPORT" :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="传输用户" prop="FILEUSERNAME">
+              <el-input v-model="host.FILEUSERNAME" :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="传输密码" prop="FILEPASSWORD">
+              <el-input type="password" v-model="host.FILEPASSWORD" :readonly="showOnly" clearable></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!--第三行-->
+      </el-form>
+    </el-card>
+
+    <div slot="footer" class="dialog-footer">
+      <el-button ref="subBtn" v-show="!(showOnly)" @click="submitHost('hostInfoForm')">{{submitButtonName}}</el-button>
+      <el-button @click="cancelHost" type="primary">取 消</el-button>
+    </div>
+  </el-dialog>
+</div>
+<style scoped>
+  .cell{
+    text-align: center;
+  }
+</style>

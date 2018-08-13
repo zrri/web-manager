@@ -1,0 +1,35 @@
+<!--继承的名字是文件名,继承的文件必须为abstract为true的文件-->
+<package name="cm" namespace="node" extends="filter-base.xml,filter-verify.xml,filter-checklogin.xml,filter-retcode.xml">
+	<service name="queryNodeInfoList" class="service.cm.services.node.NodeService"
+			method="queryAllNodes">
+	</service>
+	
+	
+	<service name="getNodeDetailInfo" class="service.cm.services.node.NodeMonitorService"
+			method="getNodeDetailInfo">
+	</service>
+	<service name="startNodes" class="service.cm.services.node.NodeMonitorService"
+			method="nodeStart"></service>
+	<service name="stopNodes" class="service.cm.services.node.NodeMonitorService"
+			method="nodeStop"></service>
+			
+	<service name="getNodeStatus" class="service.cm.services.node.NodeMonitorService"
+			method="getNodeStatus"></service>
+			
+			
+    <service name="isExistNodeID" class="service.cm.services.node.NodeService"
+			method="isExistNodeID">
+	</service>	
+	 <service name="AddNodeInfo" class="service.cm.services.node.NodeService"
+			method="AddNodeInfo">
+	 	 
+	 	 
+	</service>		
+	 <service name="editNodeInfo" class="service.cm.services.node.NodeService"
+			method="editNodeInfo">		
+			</service>	
+	<service name="deleteNodeByList" class="service.cm.services.node.NodeService"
+			method="deleteNodeByList">		
+			</service>			
+			
+</package>

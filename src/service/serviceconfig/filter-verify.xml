@@ -1,0 +1,5 @@
+<package name="filter-verify" abstract="true">
+    <!-- 校验 filter -->
+	<filter name="VerifyFilter"  class="service.common.filter.VerifyFilter" scope="singleton">
+    </filter>
+</package>

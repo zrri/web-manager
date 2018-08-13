@@ -1,0 +1,30 @@
+<package name="auth" namespace="user" extends="filter-base.xml,filter-verify.xml,filter-retcode.xml">
+	<service name="addGroupInfo" class="service.auth.services.f05.f0505.F0505"
+			method="addGroupInfo">
+	</service>
+	<service name="editGroupInfo" class="service.auth.services.f05.f0505.F0505"
+			method="editGroupInfo">
+	</service>
+	
+	<service name="queryGroupsFullTreeList" class="service.auth.services.f05.f0505.F0505"
+			method="queryGroupsFullTreeList">
+	</service>
+	
+	<service name="deleteGroupsAndGroupFuncs" class="service.auth.services.f05.f0505.F0505"
+			method="deleteGroupsAndGroupFuncs">
+	</service>
+	 <service name="queryGroupInfoList" class="service.auth.services.f05.f0505.F0505"
+			method="queryGroupInfoList">
+	</service>
+	
+	 <service name="deleteFunctionFromGroup" class="service.auth.services.f05.f0505.F0505"
+			method="deleteFunctionFromGroup">
+	</service>
+	<service name="addFunctionToGroup" class="service.auth.services.f05.f0505.F0505"
+			method="addFunctionToGroup">
+	</service>
+	<service name="isExistGroupIDorName" class="service.auth.services.f05.f0505.F0505"
+			method="isExistGroupIDorName">
+	</service>
+	
+</package>

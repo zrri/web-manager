@@ -1,0 +1,5 @@
+<package name="filter-checklogin" abstract="true">
+	<!-- 权限 filter -->                      
+	<filter name="checkLoginFilter"  class="service.common.filter.CheckLoginFilter" scope="singleton">
+	</filter>
+</package>

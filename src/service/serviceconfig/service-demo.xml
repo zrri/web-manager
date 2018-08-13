@@ -1,0 +1,13 @@
+<!--继承的名字是文件名,继承的文件必须为abstract为true的文件-->
+<package name="trade" namespace="demo" extends="filter-base.xml,filter-verify.xml,filter-padLog.xml,filter-retcode.xml">
+	<!-- demo测试 -->
+	<service name="demoService" class="service.demo.DemoService"
+			method="execute">
+	</service>
+	<!-- demo测试 -->
+	<service name="demoService1" class="service.demo.DemoService"
+			method="add">
+	 
+	</service>
+	
+</package>

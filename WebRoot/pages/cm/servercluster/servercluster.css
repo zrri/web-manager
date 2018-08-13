@@ -1,0 +1,16 @@
+.box-card {
+    flex-direction: row ;
+}
+
+.server_container{
+    display: flex;
+    flex-wrap: wrap;
+    margin:20px;
+}
+.btn {
+    width:100px;
+}
+
+.ck {
+    background-color: white;
+}

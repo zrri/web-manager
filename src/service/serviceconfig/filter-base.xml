@@ -1,0 +1,5 @@
+<package name="filter-base" abstract="true">
+	<!-- 数据解析 filter -->
+	<filter name="MessageParseFilter"  class="service.common.filter.MessageParser" scope="singleton">
+    </filter>
+</package>

@@ -1,0 +1,110 @@
+<div id="pad_rolemanagement">
+  <el-card class="box-card" style="padding-top:20px">
+      <el-form :inline="true" class="demo-form-inline">
+          <el-form-item label="角色代码">
+            <el-input v-model='roleId_select' prefix-icon="el-icon-search" placeholder="输入查询的角色代码"></el-input>
+          </el-form-item>
+          <el-form-item label="角色名称">
+            <el-input v-model='roleName_select' prefix-icon="el-icon-search" placeholder="请输入查询的角色名称"></el-input>
+          </el-form-item>
+      </el-form>
+  </el-card>
+
+  <el-card class="box-card" style="padding-top:10px">
+    <div class="yu-toolBar">
+      <el-button-group>
+        <el-button icon="plus" @click="addNewRole">添加</el-button>
+        <el-button icon="yx-bin" @click="multiDeleteRoles">批量删除</el-button>
+        <el-button icon="edit" @click="selectEditRole">修改</el-button>
+      </el-button-group>
+    </div>
+  </el-card>
+  <template>
+    <el-table
+      tooltip-effect="dark"
+      :data="getSelectConditionData"
+      style="width:100%;"
+      @selection-change="handleSelectionChange"
+      >
+      <el-table-column type="selection" width="65"></el-table-column>
+      <el-table-column label="操作" width="120">
+          <template scope="scope">
+              <el-button size="mini" type="primary" @click.native.prevent="singleEditRole(scope.$index, scope.row)">编辑
+              </el-button>
+              <el-button size="mini" type="danger"  @click.native.prevent="singleDeleteRole(scope.$index, scope.row)">删除
+              </el-button>
+          </template>
+      </el-table-column>
+      <!--prop表示绑定传入表格List中的RoleId  -->
+      <el-table-column prop="ROLE_ID" label="角色编号" width="120"></el-table-column>
+      <el-table-column prop="ROLE_NAME" label="角色名称" width="120"></el-table-column>
+      <el-table-column prop="CREATE_DATE" label="创建时间" width="120"></el-table-column>
+      <el-table-column prop="UPDATE_DATE" label="更新时间" width="120"></el-table-column>
+      <el-table-column prop="ROLE_DESCRIPTION" label="角色描述" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="ISVOID" label="是否有效" width="120" :formatter="showIsVoidName"></el-table-column>
+
+    </el-table>
+  </template>
+  <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="selectRoleInfos.length"
+        :page-size="pageSize"
+        @size-change="sizeChange"
+        @current-change="currentChange"
+        @prev-click="prevClick"
+        @next-click="nextClick"
+  >
+  </el-pagination>
+</div>
+
+
+<!-- 添加,修改角色的弹出层 -->
+<div id="pad_roleDialog">
+  <el-dialog :title="titleName" :visible.sync="isShowDailog">
+    <el-row :gutter="25">
+      <el-col :span="25">
+        <el-card class="box-card" style="height: auto;padding-top:20px">
+          <el-form :inline="true" :model="formData" :rules="rules"  ref="roleForm" class="demo-form-inline">
+              <el-form-item label="角色编号" prop="ROLE_ID">
+                <el-input v-model="formData.ROLE_ID" placeholder="请输入角色编号"></el-input>
+              </el-form-item>
+              <el-form-item label="角色名称" prop="ROLE_NAME">
+                <el-input v-model="formData.ROLE_NAME" placeholder="请输入角色名称"></el-input>
+              </el-form-item>
+              <el-form-item label="角色描述" prop="ROLE_DESCRIPTION">
+                <el-input v-model="formData.ROLE_DESCRIPTION" placeholder="请输入角色描述"></el-input>
+              </el-form-item>
+          </el-form>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-card class="box-card" style="height: auto;padding-top:20px;padding-bottom:20px">
+        <span style="font:16px;display: block;margin-bottom: 10px;">
+             PAD功能选择：
+        </span>
+        <el-tree
+            :data="treeData"
+            show-checkbox
+            node-key="id"
+            ref="checkedTree"
+            highlight-current
+            style="height: 200px;overflow-y:auto;">
+        </el-tree>
+        <!-- :props="defaultProps"  -->
+    </el-card>
+
+
+
+    <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="closeDialog">取 消</el-button>
+        <el-button @click="addOrUpdateSubmit">{{buttonName}}</el-button>
+    </div>
+  </el-dialog>
+
+
+
+
+
+
+</div>

@@ -1,0 +1,161 @@
+<div id="pad_orgmanagement">
+  <el-row :gutter="23">
+    <el-col :span="13">
+      <el-card class="box-card" style="height:700px;overflow:auto">
+        <div slot="header" class="clearfix">
+          <span>菜单</span>
+        </div>
+        <el-row :gutter="20" style="padding-top:20px">
+          <el-col :span="13">
+            <el-form :inline="true" class="demo-form-inline">
+              <el-input v-model="filterName" placeholder="输入关键字进行过滤"></el-input>
+            </el-form>
+          </el-col>
+          <el-col :span="3">
+            <el-button type="primary" @click="addNewOrg">添加</el-button>
+          </el-col>
+          <el-col :span="3">
+            <el-button type="primary" @click="deleteOrgInfoList">删除</el-button>
+          </el-col>
+          <el-col :span="3">
+            <el-button type="primary" @click="addNewRootOrg">添加根机构</el-button>
+          </el-col>
+        </el-row>
+        <!-- @check-change="handleCheckChange" -->
+        <el-tree
+                id="padOrg-tree"
+                class="filter-tree"
+                :data="padOrgTreeData"
+                :props="padOrgTreeProps"
+                :filter-node-method="filterNode"
+                ref="padOrgTree"
+                highlight-current
+
+                @node-click="handleNodeClick"
+                style="border:none">
+        </el-tree>
+      </el-card>
+
+    </el-col>
+    <el-col :span="10">
+      <el-card class="box-card" style="height:700px;overflow: auto;">
+        <div class="clearfix" slot="header">
+          <span>详情</span>
+        </div>
+        <el-form class="demo-ruleForm" label-width="100px" style="padding-top:20px" >
+          <el-form-item label="机构编号" prop="ORGID">
+            <el-input v-model="updateOrgData.ORGID" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label="机构中文名" prop="ORG_CN_NAME">
+            <el-input v-model="updateOrgData.ORG_CN_NAME"></el-input>
+          </el-form-item>
+          <el-form-item label="机构英文名" prop="ORG_ENG_NAME">
+            <el-input v-model="updateOrgData.ORG_ENG_NAME"></el-input>
+          </el-form-item>
+          <el-form-item label="上级机构编号" prop="PARENT_ORGID" v-show="false">
+            <el-input v-model="updateOrgData.PARENT_ORGID" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label="上级机构名称" prop="PARENT_ORG_NAME">
+            <el-input v-model="updateOrgData.PARENT_ORG_NAME" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label="机构级别" prop="ORG_LEVEL">
+            <el-input v-model="updateOrgData.ORG_LEVEL" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label="机构类型" prop="ORG_TYPE">
+            <el-input v-model="updateOrgData.ORG_TYPE"></el-input>
+          </el-form-item>
+          <el-form-item label="创建日期" prop="CREATE_DATE">
+            <el-input v-model="updateOrgData.CREATE_DATE" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label="更新日期" prop="UPDATE_DATE">
+            <el-input v-model="updateOrgData.UPDATE_DATE" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label="状态" prop="ISVOID">
+            <el-select v-model="updateOrgData.ISVOID">
+              <el-option value="1" label="可用"></el-option>
+              <el-option value="2" label="不可用"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="updateOrgSubmit">更新</el-button>
+          </el-form-item>
+        </el-form>
+
+      </el-card>
+    </el-col>
+
+  </el-row>
+</div>
+
+
+<!-- 添加机构的Dialog -->
+<div id="pad_orgDialog">
+  <el-dialog :title="titleName" :visible.sync="isShowDialog">
+    <el-card class="box-card" style="padding-top:20px">
+      <el-form v-model="formData" rules="formRules">
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="机构编号" prop="ORGID">
+              <el-input v-model="formData.ORGID"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="机构中文名">
+              <el-input v-model="formData.ORG_CN_NAME"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="机构英文名">
+              <el-input v-model="formData.ORG_ENG_NAME"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="上级机构编号" v-show="false">
+              <el-input v-model="formData.PARENT_ID"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="上级机构名称">
+              <el-input v-model="formData.PARENT_ORG_NAME" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="机构级别">
+              <el-input v-model="formData.ORG_LEVEL" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="机构类型">
+              <el-input v-model="formData.ORG_TYPE"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="机构排序">
+              <el-input v-model="formData.SORT_NO"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="状态">
+              <el-select v-model="formData.ISVOID">
+                <el-option value="1" label="可用"></el-option>
+                <el-option value="2" label="不可用"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+
+    </el-card>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="cancelDialog">取消</el-button>
+      <el-button @click="addOrgInfoSubmit">{{buttonName}}</el-button>
+    </div>
+
+
+
+  </el-dialog>
+</div>

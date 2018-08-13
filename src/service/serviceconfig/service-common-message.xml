@@ -1,0 +1,6 @@
+<!--继承的名字是文件名,继承的文件必须为abstract为true的文件-->
+<package name="common" namespace="message" extends="filter-base.xml,filter-verify.xml,filter-retcode.xml">
+	<service name="registWebsocket" class="service.common.websocket.WebSocketService"
+			method="registWebSocket">
+	</service>
+</package>

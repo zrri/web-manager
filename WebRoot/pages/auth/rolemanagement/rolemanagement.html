@@ -1,0 +1,165 @@
+
+<!-- 必须全局拥有唯一的id -->
+<div id="el_rolemanagement">
+    <el-card class="box-card" style="padding-top:20px">
+            <el-form :inline="true"  ref="userInfoForm" class="demo-form-inline">
+                <el-form-item label="角色名称">
+                    <el-input
+                            placeholder="请输入角色名称"
+                            prefix-icon="el-icon-search"
+                            v-model="filterRoleName">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="角色代码">
+                <el-input
+                        placeholder="请输入角色代码"
+                        prefix-icon="el-icon-search"
+                        v-model="filterRoleId">
+                </el-input>
+                </el-form-item>
+                <!-- <el-form-item label="角色状态">
+                  <el-select v-model="filterRoleStatus" placeholder="请选择状态">
+                    <el-option
+                      v-for="item in filterRoleStatusOptions"
+                      v-bind:key="item.value"
+                      v-bind:label="item.label"
+                      v-bind:value="item.value">
+                      </el-option>
+                  </el-select>
+                </el-form-item> -->
+            </el-form>
+        </el-card>
+    <el-card class="box-card" style="padding-top:10px">
+    <div class="yu-toolBar">
+        <el-button-group>
+            <el-button icon="plus" @click="createrole">添加</el-button>
+            <el-button icon="yx-bin" @click="deleterole">批量删除</el-button>
+            <el-button icon="edit" @click="editrole">修改</el-button>
+
+        </el-button-group>
+    </div>
+    </el-card>
+
+    <template>
+        <el-table
+                ref="multipleTable"
+                :data="getRoleData"
+                tooltip-effect="dark"
+                style="width: 100%"
+                @selection-change="handleSelectionChange"
+               >
+            <el-table-column
+                    type="selection"
+                    width="65">
+            </el-table-column>
+
+
+            <el-table-column
+                    label="操作"
+                    width="120">
+                <template scope="scope">
+                    <el-button
+                            size="mini" @click.native.prevent="editSigleRow(scope.$index, scope.row)">编辑
+                    </el-button>
+                    <el-button size="mini" type="danger"  @click.native.prevent="deleteSigleRow(scope.$index, scope.row)">删除
+                    </el-button>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="ROLE_ID"
+                    label="编号"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="ROLE_NAME"
+                    label="名称"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="ROLE_DESCRIBTION"
+                    label="描述"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="STATUS"
+                    :formatter="getStatusName"
+                    label="是否有效"
+                    width="120">
+            </el-table-column>
+        </el-table>
+
+    </template>
+    <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="roleData.length"
+            :page-size="pageSize"
+            @size-change="sizeChange"
+            @current-change="currentChange"
+            @prev-click="prevClick"
+            @next-click="nextClick"
+            >
+    </el-pagination>
+</div>
+
+
+<!--添加-修改角色图层-->
+    <div id="el_addorEditrole">
+    <el-dialog :title="titleName" :visible.sync="addroleLayerVisible">
+        <el-row :gutter="25">
+            <el-col :span="25">
+                <el-card class="box-card" style="height: auto;padding-top:20px">
+                    <el-form :inline="true" :model="roleForm" :rules="rules"  ref="roleForm" class="demo-form-inline">
+                        <el-form-item label="角色名称" prop="addfilterRoleName">
+                            <el-input
+                                    placeholder="请输入角色名称"
+                                    prefix-icon="el-icon-search"
+                                    v-model="roleForm.addfilterRoleName">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="角色代码" prop="addfilterRoleId">
+                            <el-input
+                                    placeholder="请输入角色代码"
+                                    v-model="roleForm.addfilterRoleId" :readonly="!(isAddRole)">
+                            </el-input>
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="角色描述" prop="addfilterRoleDescibtion">
+                            <el-input
+                                    placeholder="请输入角色描述"
+                                    v-model="roleForm.addfilterRoleDescibtion">
+                            </el-input>
+                            </el-input>
+                        </el-form-item>
+                    </el-form>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-card class="box-card" style="height: auto;padding-top:20px;padding-bottom:20px">
+            <span style="font:16px;display: block;margin-bottom: 10px;">
+                 功能选择：
+            </span>
+            <el-tree
+                :data="data"
+                show-checkbox
+                node-key="id"
+                ref="tree"
+                highlight-current
+
+                :props="defaultProps" style="height: 200px;overflow-y:auto;">
+        </el-tree>
+</el-card>
+        <!--<div class="buttons" style="margin-top: 10px;" style="display: none">-->
+            <!--<el-button @click="ChangeChecked">反选</el-button>-->
+        <!--</div>-->
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="cancelAddRoleData">取 消</el-button>
+            <el-button  @click="submitAddRoleData">确 定</el-button>
+        </div>
+    </el-dialog>
+        </div>
+<style scoped>
+    .cell{
+        text-align: center;
+    }
+</style>

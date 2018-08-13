@@ -1,0 +1,24 @@
+<package name="auth" namespace="user" extends="filter-base.xml,filter-verify.xml,filter-retcode.xml">
+	<service name="queryRoleInfoList" class="service.auth.services.f04.f0405.F0405"
+			method="queryRoleInfoList">
+	</service>
+
+	<service name="deleteRoleInfoList" class="service.auth.services.f04.f0405.F0405"
+			method="deleteRoleInfoList">
+	</service>
+     <service name="queryFuncGroupTreeList" class="service.auth.services.f04.f0405.F0405"
+			method="queryFuncGroupTreeList">
+	</service>
+	<service name="addRoleInfo" class="service.auth.services.f04.f0405.F0405"
+			method="addRoleInfo">
+	</service>
+	<service name="editRoleInfo" class="service.auth.services.f04.f0405.F0405"
+			method="editRoleInfo">
+	</service>
+	<service name="isExistRoleID" class="service.auth.services.f04.f0405.F0405" 
+			method="isExistRoleID">
+	</service>
+	<service name="queryRolesInfo" class="service.auth.services.f04.f0405.F0405" 
+			method="execute">
+	</service>
+</package>

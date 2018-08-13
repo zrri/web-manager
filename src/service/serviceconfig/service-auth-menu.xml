@@ -1,0 +1,13 @@
+<package name="auth" namespace="menu" extends="filter-base.xml,filter-verify.xml,filter-padLog.xml,filter-retcode.xml">
+	<service name="queryMenuInfo" class="service.auth.services.f06.f0605.F0605" method="queryMenuInfo">
+	</service>	
+	
+	<service name="updateMenuInfo" class="service.auth.services.f06.f0602.F0602" method="updateMenuInfo">
+	</service>	
+	
+	<service name="addMenuInfo" class="service.auth.services.f06.f0601.F0601" method="addMenuInfo">
+	</service>
+	
+	<service name="removeMenuInfo" class="service.auth.services.f06.f0603.F0603" method="removeMenuInfo">
+	</service>
+</package>

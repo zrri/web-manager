@@ -1,0 +1,6 @@
+<!--继承的名字是文件名,继承的文件必须为abstract为true的文件-->
+<package name="trade" namespace="demo">
+	<!-- demo测试 -->
+	<service name="testResponse" class="service.demo.TestService"
+			method="testResponse">
+</package>

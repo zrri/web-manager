@@ -1,0 +1,145 @@
+<!-- 必须全局拥有唯一的id -->
+<div id="el_menumanagement">
+
+    <el-row :gutter="20">
+
+        <el-col :span="10">
+
+            <el-card class="box-card" style="height:700px;overflow:auto;">
+                <div slot="header" class="clearfix">
+                    <span>菜单</span>
+                </div>
+
+                <el-form label-width="0px" style="padding-top:10px">
+                    <el-form-item>
+                        <el-button type="primary" @click="addMenu()">添加</el-button>
+                        <el-button type="primary" @click="showDeleteMenuDialog()">删除</el-button>
+                        <el-button type="primary" @click="addRootMenu()">添加根菜单</el-button>
+                    </el-form-item>
+                </el-form>
+
+
+                <el-tree
+
+                        :data="data2"
+                        :props="defaultProps"
+                        ref="orgTree"
+                        node-key="id"
+                        @node-click="nodeClick" style="border:none"
+                        highlight-current="true">
+                </el-tree>
+            </el-card>
+        </el-col>
+
+        <el-col :span="13">
+            <el-card class="box-card" style="height:700px;overflow:auto;">
+                <div slot="header" class="clearfix">
+                    <span>详情</span>
+                </div>
+                <el-form :model="menuDetail" :rules="rules" ref="menuDetail" label-width="100px"
+                         class="demo-ruleForm" style="padding-top:20px">
+
+                    <el-form-item label="菜单名称" prop="DISPLAYNAME">
+                        <el-input v-model="menuDetail.DISPLAYNAME"></el-input>
+                    </el-form-item>
+                    <el-form-item label="菜单类型" prop="NODETYPE">
+                        <template>
+                            <el-select v-model="menuTypeChoose.value2" placeholder="请选择菜单类型">
+                                <el-option
+                                        v-for="item in menuTypeChoose.options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-form-item>
+                    <el-form-item label="对应功能" prop="correspondFunction">
+                        <template>
+                            <el-select v-model="correspondFun.value3" placeholder="请选择功能">
+                                <el-option
+                                        v-for="item in correspondFun.options"
+                                        :key="item.FUNC_ID"
+                                        :label="item.FUNC_NAME"
+                                        :value="item.FUNC_ID">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-form-item>
+                    <el-form-item label="排序" prop="NODEORDER">
+                        <el-input type="number" mini="0" v-model="menuDetail.NODEORDER"></el-input>
+                    </el-form-item>
+
+                    <el-form-item>
+
+                        <el-button type="primary" @click="updateMenuInfo()" ref="updateBtn">更新</el-button>
+
+                        <el-button @click="resetMenu()">重置</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+
+        </el-col>
+
+
+    </el-row>
+
+    <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%"
+    >
+        <span>这是一段信息</span>
+        <span slot="footer" class="dialog-footer">
+                 <el-button @click="dialogClose('cancel')">取 消</el-button>
+                 <el-button type="primary" @click="dialogClose('ok')">确 定</el-button>
+         </span>
+    </el-dialog>
+
+</div>
+
+
+<!--添加菜单弹窗-->
+<div id="el_menuInfoDialog">
+    <el-dialog title="添加" :visible.sync="menuInfoDialogVisible">
+        <el-form :model="menuDetail" :rules="rules" ref="menuDetail" label-width="100px"
+                 class="demo-ruleForm">
+
+            <el-form-item label="菜单名称" prop="DISPLAYNAME">
+                <el-input v-model="menuDetail.DISPLAYNAME"></el-input>
+            </el-form-item>
+            <el-form-item label="菜单类型" prop="NODETYPE">
+                <template>
+                    <el-select v-model="menuTypeChoose.value2" placeholder="请选择菜单类型">
+                        <el-option
+                                v-for="item in menuTypeChoose.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>
+            <el-form-item label="对应功能" prop="correspondFunction">
+                <template>
+                    <el-select v-model="correspondFun.value3" placeholder="请选择功能">
+                        <el-option
+                                v-for="item in correspondFun.options"
+                                :key="item.FUNC_ID"
+                                :label="item.FUNC_NAME"
+                                :value="item.FUNC_ID">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>
+            <el-form-item label="排序" prop="NODEORDER">
+                <el-input type="number" mini="0" v-model="menuDetail.NODEORDER"></el-input>
+            </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="menuInfoDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="addMenuInfoSubmit">确定</el-button>
+        </div>
+    </el-dialog>
+</div>

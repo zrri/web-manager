@@ -1,0 +1,121 @@
+
+<!-- 必须全局拥有唯一的id -->
+<div id="pad_applicationmanagement">
+
+    <el-row :gutter="5" >
+        <el-col :span="10">
+
+            <el-card class="box-card" style="height:500px;overflow:auto;">
+                <div slot="header" class="clearfix">
+                    <span>已分组功能</span>
+                </div>
+                <el-row :gutter="0" style="padding-top:10px">
+                    <el-col :span="5">
+                        <el-button type="primary" @click="addGroup">添加</el-button>
+                    </el-col>
+                    <el-col :span="5">
+                        <el-button type="primary" @click="removeGroup">删除</el-button>
+                    </el-col>
+                    <el-col :span="5">
+                        <el-button type="primary" @click="editGroup">编辑</el-button>
+                    </el-col>
+                </el-row>
+
+
+                <el-tree
+                        id="left-tree"
+                        class="filter-tree"
+                        :data="dataHasGroup"
+                        :props="defaultProps"
+                        :filter-node-method="filterNode"
+                        ref="left_tree"
+                        expand-on-click-node="false"
+                        check-on-click-node="true"
+                        highlight-current="true"
+                        node-key="id"
+                        @node-click="leftTreeNodeClick"	style="border:none">
+                </el-tree>
+            </el-card>
+        </el-col>
+        <el-col :span="4">
+            <div  style="height:500px;display:table;width:100%">
+                  <div style="text-align: center; vertical-align:middle;display :table-cell">
+                    <el-row>
+                      <el-button type="primary" @click="addToGroup()" style="margin-bottom: 50px;">从分组加入</el-button>
+                    </el-row>
+                    <el-row>
+                      <el-button type="primary" @click="removeFromGroup()" >从分组移除</el-button>
+                    </el-row>
+                  </div>
+
+            </div>
+            </el-col>
+
+
+        <el-col :span="10">
+            <el-card class="box-card" style="height:500px;overflow:auto;">
+                <div slot="header" class="clearfix">
+                    <span>未分组功能</span>
+                </div>
+                <el-tree
+                        id="right-tree"
+                        class="filter-tree"
+                        :data="dataNoGroup"
+                        :props="defaultProps"
+                        :filter-node-method="filterNode"
+                        ref="right_tree"
+                        expand-on-click-node="false"
+                        check-on-click-node="true"
+                        highlight-current="true"
+
+                        node-key="id"
+                        @node-click="rightTreeNodeClick"	style="border:none">
+                </el-tree>
+            </el-card>
+        </el-col>
+    </el-row>
+</div>
+
+<!--添加-修改功能组图层-->
+<div id="pad_applicationDialog">
+    <el-dialog :title="titleName" :visible.sync="addorEditGroupLayer">
+        <el-row :gutter="25">
+            <el-col :span="25">
+                <el-card class="box-card" style="height: auto;padding-top:20px">
+
+                    <el-form :inline="true" :model="addeditGroupForm" ref="addeditGroupForm" :rules="rules" class="demo-form-inline" label-position="top">
+                        <el-form-item label="功能组编号" prop="addGroupId">
+                            <el-input
+                                    placeholder="请输入功能组编号"
+                                    prefix-icon="el-icon-search"
+                                    :readonly="!(isAddGroupRole)"
+                                    v-model="addeditGroupForm.addGroupId">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="功能组名称" prop="addGroupName">
+                            <el-input
+                                    placeholder="请输入功能组名称"
+                                    v-model="addeditGroupForm.addGroupName" >
+                            </el-input>
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="功能组排序" prop="sortNo">
+                            <el-input
+                                    placeholder="请输入功能组序号"
+                                    v-model="addeditGroupForm.sortNo" >
+                            </el-input>
+                            </el-input>
+                        </el-form-item>
+                    </el-form>
+
+                </el-card>
+            </el-col>
+        </el-row>
+
+
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="cancelAddGroupData">取 消</el-button>
+            <el-button  @click="submitAddGroupData">确 定</el-button>
+        </div>
+    </el-dialog>
+</div>

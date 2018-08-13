@@ -1,0 +1,185 @@
+<div id="pad_usermanagement">
+  <el-card class="box-card" style="padding-top:20px">
+    <el-form :inline="true" class="demo-form-inline" v-model="userInfoSearch">
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="柜员编号">
+            <el-input v-model="userInfoSearch.TELLER_ID" placeholder="请输入柜员编号"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="柜员姓名">
+            <el-input v-model="userInfoSearch.TELLER_NAME" placeholder="请输入柜员姓名"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="所属机构">
+            <el-input v-model="userInfoSearch.ORG_CN_NAME" placeholder="请输入机构编号"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="柜员类型">
+            <el-select v-model="userInfoSearch.TELLER_TYPE">
+              <el-option v-for="item in teller_Types" :key="item.id" :label="item.label" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="柜员状态">
+            <el-select v-model="userInfoSearch.TELLER_STATUS">
+              <el-option v-for="item in teller_Status" :key="item.id" :label="item.label" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="登陆方式">
+            <el-select v-model="userInfoSearch.TELLER_LOGIN_TYPE">
+              <el-option v-for="item in teller_Login_Type" :key="item.id" :label="item.label" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-form-item>
+          <el-button type="primary" @click="queryPadTellerInfoList">查询</el-button>
+          <el-button type="primary" @click="clearInput">清空</el-button>
+        </el-form-item>
+      </el-row>
+    </el-form>
+  </el-card>
+
+
+
+  <el-card class="box-card" style="padding-top:10px">
+    <div class="yu-toolBar">
+      <el-button-group>
+        <el-button icon="plus" @click="addNewUser">添加</el-button>
+        <el-button icon="yx-bin" @click="multUsersDelete">批量删除</el-button>
+        <el-button icon="edit" @click="updateUser">修改</el-button>
+      </el-button-group>
+    </div>
+  </el-card>
+  <template>
+    <el-table
+      style="width:100%;"
+      :data="getSelectConditionData"
+      @selection-change="handleSelectionChange"
+      >
+      <el-table-column type="selection" width="65"></el-table-column>
+      <el-table-column label="操作" width="120">
+        <template scope="scope">
+            <el-button size="mini" type="info" icon="search" @click="handleShow(scope.$index, scope.row)">
+            </el-button>
+            <el-button size="mini" type="primary" icon="edit" @click="handleEdit(scope.$index, scope.row)">
+            </el-button>
+            <el-button size="mini" type="danger" icon="delete" @click="handleDelete(scope.$index, scope.row)">
+            </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="柜员编号" width="90" prop="TELLER_ID"></el-table-column>
+      <el-table-column label="柜员名称" width="120" prop="TELLER_NAME"></el-table-column>
+      <el-table-column label="机构编号" width="120" prop="ORGID" v-if="false"></el-table-column>
+      <el-table-column label="所属机构" width="120" prop="ORG_CN_NAME"></el-table-column>
+      <el-table-column label="柜员类型" width="120" prop="TELLER_TYPE" :formatter="tellerTypeFormat"></el-table-column>
+      <el-table-column label="角色编号" width="120" prop="ROLE_ID" v-if="false"></el-table-column>
+      <el-table-column label="关联角色" width="120" prop="ROLE_NAME"></el-table-column>
+      <el-table-column label="登录方式" width="120" prop="TELLER_LOGIN_TYPE" :formatter="tellerLoginTypeFormat"></el-table-column>
+      <el-table-column label="身份证号" prop="IDCARD" show-overflow-tooltip></el-table-column>
+      <el-table-column label="手机号码" width="120" prop="MOBILE_NUMBER"></el-table-column>
+      <el-table-column label="创建时间" width="120" prop="CREATE_DATE"></el-table-column>
+      <el-table-column label="更新时间" width="120" prop="UPDATE_DATE"></el-table-column>
+      <el-table-column label="柜员状态" width="90" prop="TELLER_STATUS"></el-table-column>
+    </el-table>
+  </template>
+  <el-pagination
+    layout="prev,pager,next"
+    :total="selectTellerInfos.length"
+    :page-size="pageSize"
+    @sizeChange="sizeChange"
+    @currentChange="currentChange"
+    @nextClick="nextClick"
+    @prevClick="prevClick">
+  </el-pagination>
+</div>
+
+<!-- 添加,修改柜员信息窗口 -->
+<div id="pad_userDialog">
+  <el-dialog :visible.sync="isShowDialog" :title="titleName">
+    <el-row :gutter="25">
+      <el-col :span="25">
+        <el-card class="box-card" style="padding-top:20px">
+          <el-form>
+            <el-row :gutter="24">
+              <el-col :span="8">
+                <el-form-item label="柜员编号" prop="TELLER_ID">
+                  <el-input v-model="formData.TELLER_ID"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="柜员姓名" prop="TELLER_NAME">
+                  <el-input v-model="formData.TELLER_NAME"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="所属机构" prop="ORGID">
+                  <el-select v-model="formData.ORGID">
+                    <el-option label="城市分行"></el-option>
+                    <el-option label="农村分行"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="8">
+                <el-form-item label="身份证号" prop="IDCARD">
+                  <el-input v-model="formData.IDCARD"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="柜员类型" prop="TELLER_TYPE">
+                  <el-input v-model="formData.TELLER_TYPE"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="登陆密码" prop="PASSWORD">
+                  <el-input v-model="formData.PASSWORD"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="8">
+                <el-form-item label="手机号码" prop="MOBILE_NUMBER">
+                  <el-input v-model="formData.MOBILE_NUMBER"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="关联角色" prop="ROLE_ID">
+                  <el-input v-model="formData.ROLE_ID"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="柜员状态" prop="TELLER_STATUS">
+                  <el-input v-model="formData.TELLER_STATUS"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="cancelDialog">取消</el-button>
+      <el-button>{{buttonName}}</el-button>
+    </div>
+  </el-dialog>
+
+
+
+
+
+
+
+</div>

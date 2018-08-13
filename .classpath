@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="classes" path="src"/>
+	<classpathentry kind="lib" path="lib/both/org.dom4j_1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/server/jsch-0.1.50.jar"/>
+	<classpathentry kind="lib" path="lib/server/gson-2.8.4.jar"/>
+	<classpathentry kind="lib" path="lib/server/commons-net-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/org.slf4j_1.6.4.v201307292016.jar"/>
+	<classpathentry kind="lib" path="lib/com.alibaba.fastjson_1.0.0.v201307292016.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.yupt_1.0.0.v201309160918.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.yupt.datatemplate_1.0.0.v201307292016.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.view_1.0.0.v201311041822.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.ui_1.0.0.v201312311030.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.ui.swing_1.0.0.v201401022005.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.trade_1.0.0.v201706211911.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.trade_1.0.0.v201312061105.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.trade.ui_1.0.0.v201312311030.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.session_1.0.0.v201705311852.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.scheduler_1.0.0.v201311041822.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.resource_1.0.0.v201312061021.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.resource.server_1.0.0.v201605301326.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.preference.client_1.0.0.v201307292016.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.plugin_1.0.0.201805111037.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.notification_1.0.0.v201309160918.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.multimedia.client_1.0.0.v201312311030.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.jdbc_1.0.0.v201703021535.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.jdbc_1.0.0.v201312191130.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.jdbc.lib_1.0.0.v201410162351.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.jdbc.lib_1.0.0.v201311041822.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.jdbc.client_1.0.0.v201307292016.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.interaction_1.0.0.v201311272151.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.interaction.server_1.0.0.v201307291326.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.interaction.client_1.0.0.v201307292016.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.device_1.0.0.v201312311030.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.context_1.0.0.v201307292016.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.communication_1.0.0.v201702092043.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.communication.socket_1.0.0.v201805081429.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.communication.server_1.0.0.v203108021105.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.communication.http_1.0.0.v201606201520.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.commons.util_1.0.0.v201705311655.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.commons.thread_1.0.0.v201607260819.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.commons.serializable_1.0.0.v201410162351.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.commons.serializable_1.0.0.v201307292016.jar"/>
+	<classpathentry kind="lib" path="lib/cn.com.bankit.phoenix.commons.datatype_1.0.0.v201309160918.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

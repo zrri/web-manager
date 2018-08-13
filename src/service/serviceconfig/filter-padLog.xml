@@ -1,0 +1,5 @@
+<package name="filter-padLog" abstract="true">
+    <!-- PAD端请求数据log -->
+	<filter name="padLogFilter"  class="service.common.filter.PadLogFilter" scope="singleton">
+    </filter>
+</package>

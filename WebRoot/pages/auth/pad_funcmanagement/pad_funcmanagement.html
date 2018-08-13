@@ -1,0 +1,177 @@
+<!-- 必须全局拥有唯一的id -->
+<div id="pad_funcmanagement">
+    <el-card class="box-card" style="padding-top: 20px;">
+        <el-form :inline="true"  ref="userInfoForm" class="demo-form-inline">
+            <el-form-item label="功能名称">
+                <el-input
+                        placeholder="请输入功能名称"
+                        prefix-icon="el-icon-search"
+                        v-model="filterfuncName">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="功能编号">
+                <el-input
+                        placeholder="请输入功能编号"
+                        prefix-icon="el-icon-search"
+                        v-model="filterfuncId">
+                </el-input>
+            </el-form-item>
+        </el-form>
+    </el-card>
+    <el-card class="box-card" style="padding-top:10px">
+        <div class="yu-toolBar">
+            <el-button-group>
+                <el-button icon="plus" @click="createfunc">添加</el-button>
+                <el-button icon="yx-bin" @click="deletefunc">批量删除</el-button>
+                <el-button icon="edit" @click="editfunc">修改</el-button>
+            </el-button-group>
+        </div>
+    </el-card>
+
+    <template>
+        <el-table
+                border
+                ref="multipleTable"
+                :data="getfuncData"
+                tooltip-effect="dark"
+                style="width: 100%"
+                @selection-change="handleSelectionChange"
+                >
+            <el-table-column
+                    type="selection"
+                    width="65">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    width="120">
+
+                <template scope="scope">
+                    <el-button
+                            size="mini" @click.native.prevent="editSigleRow(scope.$index, scope.row)">编辑
+                    </el-button>
+                    <el-button size="mini" type="danger"  @click.native.prevent="deleteSigleRow(scope.$index, scope.row)">删除
+
+                    </el-button>
+                </template>
+            </el-table-column>
+            <el-table-column prop="FUNC_NAME" label="功能名称" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="FUNC_ID" label="功能编号" width="120"></el-table-column>
+            <el-table-column prop="FUNC_DESCRIPTION" label="功能描述" width="150"></el-table-column>
+            <el-table-column prop="ROUTE_ID" label="路由编号" width="120"></el-table-column>
+            <el-table-column prop="GROUP_NAME" label="所属分组" width="120"></el-table-column>
+        </el-table>
+
+    </template>
+    <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="funcData.length"
+            :page-size="pageSize"
+            @size-change="sizeChange"
+            @current-change="currentChange"
+            @prev-click="prevClick"
+            @next-click="nextClick"
+            >
+    </el-pagination>
+</div>
+
+<!--添加-修改功能图层-->
+<div id="pad_funcDialog">
+    <el-dialog :title="titleName" :visible.sync="addfuncLayerVisible">
+        <el-row :gutter="25">
+            <el-col :span="25">
+                <el-card class="box-card" style="padding-top:20px">
+                    <el-form :inline="true"  :model="funcForm" :rules="rules" ref="funcForm" class="demo-form-inline" label-position="top">
+
+                        <el-row :gutter="24">
+
+                          <el-col :span="12">
+                              <el-form-item label="功能编号" prop="addfilterfuncId">
+                                  <el-input
+                                          placeholder="请输入功能编号"
+                                          v-model="funcForm.addfilterfuncId" :readonly="!(isAddRole)">
+                                  </el-input>
+                                  </el-input>
+                              </el-form-item>
+
+                          </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="功能名称"  prop="addfilterfuncName">
+                                    <el-input
+                                            placeholder="请输入功能名称"
+                                            prefix-icon="el-icon-search"
+                                            v-model="funcForm.addfilterfuncName">
+                                    </el-input>
+                                </el-form-item>
+
+                            </el-col>
+
+                        </el-row>
+                        <el-row :gutter="24">
+                            <el-col :span="12">
+                                <el-form-item label="功能描述" prop="addfilterfuncDes">
+                                    <el-input
+                                            placeholder="请输入功能描述"
+                                            v-model="funcForm.addfilterfuncDes">
+                                    </el-input>
+                                </el-form-item>
+
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="路由ID" prop="addfilterfuncRoute">
+                                    <el-input
+                                            placeholder="请输入对应路由ID"
+                                            v-model="funcForm.addfilterfuncRoute">
+                                    </el-input>
+                                </el-form-item>
+
+                            </el-col>
+                        </el-row>
+
+                        <el-row :gutter="24">
+                            <el-col :span="12">
+                                <el-form-item label="所属分组">
+                                <el-select v-model="funcForm.funcGroupValue" placeholder="请选择所属分组">
+                                    <el-option
+                                            v-for="item in funcGroupOptions"
+                                            :key="item.id"
+                                            :label="item.label"
+                                            :value="item.id">
+                                    </el-option>
+                                </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="排序号" prop="addfilterfuncSortNo">
+                                    <el-input
+                                            placeholder="请输入分组下排序号"
+                                            v-model="funcForm.addfilterfuncSortNo">
+                                    </el-input>
+                                </el-form-item>
+
+                            </el-col>
+                        </el-row>
+
+                        <el-form-item label="选择按钮" style="display:none" >
+                            <el-checkbox-group v-model="checkedfuncbuttonArr" @change="handleCheckedFuncChange">
+                                <el-checkbox v-for="funcbutton in funcbuttonArr" :label="funcbutton.id" :key="funcbutton.id"
+                                             >{{funcbutton.label}}</el-checkbox>
+                            </el-checkbox-group>
+
+                        </el-form-item>
+
+                    </el-form>
+                </el-card>
+            </el-col>
+        </el-row>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="cancelAddfuncData">取 消</el-button>
+            <el-button  @click="submitAddfuncData">{{buttonName }}</el-button>
+        </div>
+    </el-dialog>
+</div>
+<style scoped>
+    .cell{
+        text-align: center;
+    }
+</style>

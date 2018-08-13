@@ -1,0 +1,147 @@
+<div id="el_node">
+  <!--<el-form-q form="query" :field-data="queryFields" search-table="mytable"></el-form-q>-->
+
+  <el-card class="box-card" style="padding-top:20px">
+    <el-form :inline="true"  ref="userInfoForm" class="demo-form-inline">
+      <el-form-item label="IP地址">
+        <el-input
+                placeholder="请输入IP地址"
+                prefix-icon="el-icon-search"
+                v-model="filterIP">
+        </el-input>
+      </el-form-item>
+    </el-form>
+  </el-card>
+  <el-card class="box-card" style="padding-top:10px">
+    <div class="yu-toolBar">
+        <el-button-group>
+          <el-button icon="plus" @click="createFn">新增</el-button>
+          <el-button icon="edit" @click="editFn">修改</el-button>
+          <el-button icon="yx-bin" @click="batchDelete">批量删除</el-button>
+        </el-button-group>
+    </div>
+  </el-card>
+  <el-table ref="mytable" row-class-name="rowClass" highlight-current-row=true :data="getNodeData"  @row-click="rowClick" @selection-change="handleSelectionChange" >
+    <el-table-column type="expand">
+      <template scope="props">
+        <div>{{props.row.DESCRIPTION}}</div>
+      </template>
+    </el-table-column>
+    <el-table-column type="selection" width="65">
+    </el-table-column>
+    <el-table-column prop="hostOptions" label="操作" width=120>
+      <template scope="scope">
+          <el-button size="mini" type="info" icon="search" @click=handleShow(scope.$index,scope.row)></el-button>
+          <el-button size="mini" type="info" icon="edit" @click=handleEdit(scope.$index,scope.row)></el-button>
+          <el-button size="mini" type="danger" icon="delete" @click=handleDelete(scope.$index,scope.row)></el-button>
+        </template>
+      </template>
+    </el-table-column>
+
+    <el-table-column prop="HOSTIP" label="主机IP地址"></el-table-column>
+    <el-table-column prop="NODETYPE" label="节点类型" :formatter="getNodeTypeName"></el-table-column>
+    <el-table-column label="APP路径" prop="APPPATH"></el-table-column>
+    <el-table-column label="节点名称" prop="NAME"></el-table-column>
+    <el-table-column label="是否软连接" prop="ISLINK" :formatter="getLinkTypeName"></el-table-column>
+    <el-table-column label="软连接目录" prop="LINKDIRECTORY"></el-table-column>
+    <el-table-column label="更新目录" prop="UPDATEDIRECTORY"></el-table-column>
+    <el-table-column label="应用端口" prop="APPPORT"></el-table-column>
+    <el-table-column label="HTTP端口" prop="HTTPPORT"></el-table-column>
+    <el-table-column label="JVM端口" prop="JVMPORT"></el-table-column>
+  </el-table>
+  <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="nodeData.length"
+          :page-size="pageSize"
+          @size-change="sizeChange"
+          @current-change="currentChange"
+          @prev-click="prevClick"
+          @next-click="nextClick"
+          >
+  </el-pagination>
+</div>
+
+<div id="el_nodeInfo">
+  <el-dialog :title="titleName" :visible.sync="nodeInfoLayerVisible">
+    <el-card class="box-card" style="padding-top:20px">
+      <el-form :model="node" ref="NodeInfoForm" label-position="top"  :rules="rules">
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="主机IP" prop="HOSTIP">
+              <el-input  v-model="node.HOSTIP" :readonly="showOnly" autofocus=true></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="节点类型" prop="NODETYPE">
+
+              <el-select v-model="node.NODETYPE" placeholder="请选择" :disabled="showOnly">
+                <el-option
+                        v-for="item in nodeTypeOptions"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="APP路径" prop="APPPATH">
+              <el-input v-model="node.APPPATH" autofocus=true :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!--第一行-->
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="节点名称" prop="NAME">
+              <el-input v-model="node.NAME" :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="是否软连接" prop="ISLINK">
+              <el-select v-model="node.ISLINK" placeholder="请选择" :disabled="showOnly">
+                <el-option
+                        v-for="item in linkOptions"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="更新目录" prop="LINKDIRECTORY">
+              <el-input v-model="node.LINKDIRECTORY":readonly="showOnly" >
+              </el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!--第二行-->
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-form-item label="应用端口" prop="APPPORT">
+              <el-input v-model="node.APPPORT" :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="HTTP端口" prop="HTTPPORT">
+              <el-input v-model="node.HTTPPORT" :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="JVM端口" prop="JVMPORT">
+              <el-input  v-model="node.JVMPORT" :readonly="showOnly"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!--第三行-->
+      </el-form>
+    </el-card>
+
+    <div slot="footer" class="dialog-footer">
+      <el-button  v-show="!(showOnly)" @click="submit">{{submitButtonName}}</el-button>
+      <el-button @click="cancelNode" type="primary">取 消</el-button>
+    </div>
+  </el-dialog>
+</div>

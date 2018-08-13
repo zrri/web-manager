@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <!--启动模块扩展-->
+    <extension point="service.boot">
+        <boot name="alarm" class="service.cm.core.alarm.AlarmManager" text="预警管理器">
+        </boot>
+    </extension>
+    <!--预警模块扩展-->
+    <extension point="cm.alarm">
+        <alarm name="NodeAlaram" class="service.cm.core.node.alarm.NodeAlarm" text="APP预警器">
+        </alarm>
+    </extension>
+</plugin>

@@ -1,0 +1,5 @@
+<package name="filter-retcode" abstract="true">
+	<!--  返回码 filter -->
+	<filter name="RetCodeFilter"  class="service.common.filter.RetCodeFilter" scope="singleton">
+    </filter>
+</package>
